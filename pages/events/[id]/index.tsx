@@ -27,7 +27,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
     console.log('server side',event);
     if(!event) {
       return {
-        props: { event: undefined } ,
+        props: { event: { questions:[]} } ,
       };
     }
     return {

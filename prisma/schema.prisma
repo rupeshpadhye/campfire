@@ -13,15 +13,6 @@ generator client {
   previewFeatures = ["referentialIntegrity"]
 }
 
-model Post {
-  id        Int     @default(autoincrement()) @id
-  title     String
-  content   String?
-  published Boolean @default(false)
-  author    User?   @relation(fields: [authorId], references: [id])
-  authorId  Int?
-}
-
 model Event {
   id        Int     @default(autoincrement()) @id
   title     String
@@ -43,6 +34,7 @@ model Question {
     eventId  Int
     title     String
     desc   String?
+    videoData Json?
     userResponses UserQuestionAnswers[]
     @@index([eventId], name: "eventId")
     @@map(name: "questions")
@@ -72,7 +64,6 @@ model User {
   image         String?
   createdAt     DateTime  @default(now()) @map(name: "created_at")
   updatedAt     DateTime  @updatedAt @map(name: "updated_at")
-  posts         Post[]
   events        Event[]
   assingedEvents UserQuestionAnswers[]
   @@map(name: "users")

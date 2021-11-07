@@ -1,6 +1,7 @@
 import { Provider } from "next-auth/client";
 import { AppProps } from "next/app";
 import 'antd/dist/antd.css';
+import './app.css';
 
 const App = ({ Component, pageProps }: AppProps) => {
   return (

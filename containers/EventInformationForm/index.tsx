@@ -8,7 +8,7 @@ import Router from "next/router";
 const EventInformationForm = ({ event }) => {
     const [form] = Form.useForm();
     const [headerImage, setHeaderImage] = React.useState(null);
-  
+    const [saving, setSaving] = useState(false);
     useEffect(() => {
       if(event.headerImage) {
         setHeaderImage(event.headerImage);
@@ -17,7 +17,7 @@ const EventInformationForm = ({ event }) => {
 
     const handSaveEventInfo = async (event) => { 
         const { id } = event;
-      
+        setSaving(true);
        const response = await fetch(
           id ? `/api/event/${id}`: `/api/event`, {
           method: id ? "PUT" : "POST",
@@ -30,7 +30,10 @@ const EventInformationForm = ({ event }) => {
             description: 'You can add questions now.',
           });
           Router.push(`/events/${response.id}`);
+        } else {
+          notification.success({ message: 'Event Info Updated.'});
         }
+        setSaving(false);
       }
   
     const handleFinish =(values) => {
@@ -83,7 +86,7 @@ const EventInformationForm = ({ event }) => {
             />
           </Form.Item>
           <Form.Item wrapperCol={{ offset: 21 }}>
-            <Button type="primary" htmlType="submit">
+            <Button type="primary" htmlType="submit" loading={saving}>
               Save
             </Button>
           </Form.Item>

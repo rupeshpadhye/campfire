@@ -8,7 +8,6 @@ import { Card, Spin } from "antd";
 import FullScreenLoading from "../components/FullScreenLoading";
 import LandingPage from '../components/LandingPage';
 
-
 const IndexPage: React.FC<Props> = (Props) => {
   const router = useRouter();
    const [session, loading] = useSession();

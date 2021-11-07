@@ -3,12 +3,27 @@ import { Card, Modal, notification, Tabs } from "antd";
 import { Form, Button, Input } from "antd";
 
 import QuestionCards from "../../components/QuestionCards";
+import LoomRecordButton from "../../components/Video/RecordButton";
+import VideoPreview from "../../components/Video/VideoPreview";
 
 const QuestionForm = (props) => {
   const [form] = Form.useForm();
-  const { question= {}, onSuccess } = props;
+  const { question= {}, onSuccess, saving } = props;
+  const [videoData, setVideoData] = useState(null);
+
+  useEffect(() => { 
+    form.setFieldsValue({
+      ...question,
+    });
+  }, [question]);
+
+  
   const handleFinish = (values) => { 
-    onSuccess({...question,...values});
+    onSuccess({...question,...values,videoData: videoData || question.videoData});
+  }
+
+  const handleInsertClicked = (videoData) => {
+   setVideoData(videoData);
   }
   return (
     <div>
@@ -16,7 +31,7 @@ const QuestionForm = (props) => {
         onFinish={handleFinish}
         layout="vertical"
         form={form}
-        initialValues={question}
+        initialValues={{...question}}
       >
         <Form.Item
           name="title"
@@ -29,7 +44,14 @@ const QuestionForm = (props) => {
             },
           ]}
         >
-          <Input />
+          <Input  />
+        </Form.Item>
+        <Form.Item
+          name="desc"
+          label="You can add more description by recording a video."
+        >
+          <LoomRecordButton btnLabel='Record' onInsertClicked={handleInsertClicked}/>
+          <VideoPreview videoData={question && question.videoData}/>
         </Form.Item>
         <Form.Item
           name="desc"
@@ -39,8 +61,8 @@ const QuestionForm = (props) => {
         </Form.Item>
 
         <Form.Item wrapperCol={{ offset: 20 }}>
-          <Button type="primary" htmlType="submit">
-            Save
+          <Button type="primary" htmlType="submit" loading={saving}>
+           {saving ? 'Saving': 'Save'} 
           </Button>
         </Form.Item>
       </Form>
@@ -54,9 +76,10 @@ const QuestionFormContainer = ({
   event,
   setEventData,
 }) => {
-  const { id, questions, ...other } = event || { questions: [] };
+  const { id, questions } = event || { questions: [] };
   const [showQuestionModal ,setShowQuestionModal] = useState(false);
   const [editQuestion, setEditQuestion] = useState(null);
+  const [saving, setSaving] = useState(false);
 
   const handleDeleteQuestion = async (question) =>  { 
     const { id:eventId } = event;
@@ -102,6 +125,8 @@ const QuestionFormContainer = ({
       notification.success({
         message: questionId ? 'Question Updated.' : 'New Question Added.',
       });
+      setShowQuestionModal(false);
+      setSaving(false);
    }
     catch(e) {
       console.log(e);
@@ -109,33 +134,34 @@ const QuestionFormContainer = ({
   }
 
   const creteNewQuestion = () => { 
-    setEditQuestion(null);
+    setEditQuestion({});
     setShowQuestionModal(true);
   }
   const handleQuestionDelete = (q) => {
     handleDeleteQuestion(q);
   }
   const handleQuestionEdit = (question) => {
+    console.log('editQuestion',editQuestion);
     setShowQuestionModal(false);
     setEditQuestion(question);
     setShowQuestionModal(true);
   }
   const handleEdiModalSave = (question) => {
-    setShowQuestionModal(false);
+    setSaving(true);
     handleEditQuestion(question);
   }
   return (
     <>
     <Modal 
     visible={showQuestionModal}
-    forceRender={true}
     title={
       editQuestion ? `Edit Question`: 'Add New Question'
     }
+    forceRender={true}
     footer={null}
     onCancel={() => setShowQuestionModal(false)}
     >
-     <QuestionForm question={editQuestion} onSuccess={handleEdiModalSave}/>
+      <QuestionForm question={editQuestion} onSuccess={handleEdiModalSave} saving={saving}/>
     </Modal>
     <Card bordered={false} title='Add New Question' extra={<div><Button type='primary' onClick={creteNewQuestion}>New Question</Button></div>}>
       <QuestionCards questions={questions} handleEdit={handleQuestionEdit} handleDelete={handleQuestionDelete}/>

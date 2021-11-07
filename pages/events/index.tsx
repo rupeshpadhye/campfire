@@ -1,18 +1,22 @@
 import React, { useEffect } from "react";
 import { GetStaticProps } from "next";
-import Layout from "./../../components/Layout";
-import prisma from "../../lib/prisma";
 import { Card, Typography, Row, Col, Button, Image } from "antd";
-import CreateEvent from "./../../public/create_event.svg";
-import styles from "./events.module.scss";
 import { getSession, useSession } from "next-auth/client";
-import FullScreenLoading from "../../components/FullScreenLoading";
-import animationData from "./../../lotties/snow.json";
 import Lottie from "react-lottie";
 import Link from "next/link";
 import { GetServerSideProps } from "next";
 import { Session } from "next-auth";
-import safeJsonStringify from 'safe-json-stringify';
+import safeJsonStringify from "safe-json-stringify";
+import Layout from "./../../components/Layout";
+import prisma from "../../lib/prisma";
+
+import FullScreenLoading from "../../components/FullScreenLoading";
+import animationData from "./../../lotties/snow.json";
+
+import CreateEvent from "./../../public/create_event.svg";
+import DefaultEventCardBG from "./../../public/celebration.svg";
+
+import styles from "./events.module.scss";
 
 const { Meta } = Card;
 
@@ -26,12 +30,12 @@ export type EventProp = {
   content: string;
   published: boolean;
   headerImage?: string;
-  backgroundImage?: string
+  backgroundImage?: string;
   uniqueLink?: string;
   expiresAt?: Date;
 };
 
-export type EventsProps = { events:Array<EventProp> };
+export type EventsProps = { events: Array<EventProp> };
 
 const defaultOptions = {
   loop: true,
@@ -50,9 +54,9 @@ const CreateEventCard: React.FC<CreateEventCardProps> = ({ session }) => {
   return (
     <div className={styles.createEventCard}>
       <div>
-        <div className={styles.createEventLottie}>
+        {/* <div className={styles.createEventLottie}>
           <Lottie options={defaultOptions} />
-        </div>
+        </div> */}
         <Row
           justify="center"
           align="middle"
@@ -70,7 +74,7 @@ const CreateEventCard: React.FC<CreateEventCardProps> = ({ session }) => {
             </Typography.Title>
             <Typography.Title level={5}>Lets Create Fun Event</Typography.Title>
             <Link href="/events/create">
-              <Button type="primary" size="large">
+              <Button type="default" size="large">
                 Create Event
               </Button>
             </Link>
@@ -93,44 +97,65 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
       author: { email: session.user.email },
     },
   });
-  events= JSON.parse(safeJsonStringify(events));
+  events = JSON.parse(safeJsonStringify(events));
   return { props: { events } };
 };
 
 const Events: React.FC<EventsProps> = (props) => {
   const [session, loading] = useSession();
   const { events = [] } = props;
-  console.log(events)
+  console.log(events);
   return loading ? (
     <FullScreenLoading />
   ) : (
     <Layout>
       <CreateEventCard session={session} />
-      <div className="page">
+      <div className={styles.eventsContainer}>
         <h1>Events</h1>
         <Row gutter={[16, 16]}>
-        {events.map((event) => {
-          return (
-            <Col span={4} key={event.id}>
-            <Link href={`/events/${event.id}`}>
-              <Card
-                hoverable
-                style={{ width: 240 }}
-                key={event.id}
-                title={event.title}
-                cover={
-                  event.headerImage ? <Image src={event.headerImage} preview={false}/>: null
-                }
-              >
-               <div>
-                 <p>Published : <b>{event.published ? "Yes" : "No"}</b></p>
-                 <p>Expired : <b>{new Date(event.expiresAt) >= new Date() ? 'Yes' : 'No'}</b></p>
-               </div>
-              </Card>
-            </Link>
-            </Col>
-          );
-        })}
+          {events.map((event) => {
+            return (
+              <Col span={4} key={event.id}>
+                <Link href={`/events/${event.id}`}>
+                  <Card
+                    hoverable
+                    className={styles.eventCard}
+                    style={{ width: 240 }}
+                    key={event.id}
+                    cover={
+                      <Image
+                        className={styles.antImage}
+                        src={
+                          event.headerImage ||
+                          "https://cdn.pixabay.com/photo/2017/07/21/23/57/concert-2527495__340.jpg"
+                        }
+                        preview={false}
+                      />
+                    }
+                  >
+                    <Meta
+                      title={event.title}
+                      description={
+                        <div>
+                          <p>
+                            Published : <b>{event.published ? "Yes" : "No"}</b>
+                          </p>
+                          <p>
+                            Expired :{" "}
+                            <b>
+                              {new Date(event.expiresAt) >= new Date()
+                                ? "Yes"
+                                : "No"}
+                            </b>
+                          </p>
+                        </div>
+                      }
+                    />
+                  </Card>
+                </Link>
+              </Col>
+            );
+          })}
         </Row>
       </div>
     </Layout>
