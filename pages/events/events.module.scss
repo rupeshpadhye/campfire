@@ -1,0 +1,22 @@
+.createEventSvg {
+    width: 400px;
+}
+.createEventLottie > div:first-child {
+    position: absolute;
+}
+.createEventCard {
+    position: relative;
+    border: 1px solid #e6e6e6;
+    margin: 16px 0;
+}
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    margin-top: 100px;
+    h1 {
+        font-size: 24px;
+        font-weight: 600;
+    }
+}

@@ -1,0 +1,14 @@
+{
+    "presets": ["next/babel"],
+    "plugins": [
+      ["superjson-next"],
+      [
+        "import",
+        {
+          "libraryName": "antd",
+          "style": true
+        }
+      ]
+    ]
+  }
+  

@@ -1,0 +1,31 @@
+.siteLayout {
+    display: flex;
+    flex-direction: column;
+    min-height: 90vh;
+    background: white;
+    padding: 0 50px;
+    margin-top: 64px;
+}
+
+.header {
+   background: #6C63FF;
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+}
+
+.title {
+    color: #fff;
+    font-size: large;
+    font-weight: bold;
+}
+
+.logoContainer {
+    display: flex;
+    justify-content: flex-start;
+    cursor: pointer;
+}
+
+.logoutBtn {
+    color: #fff;
+}

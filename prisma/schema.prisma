@@ -22,6 +22,48 @@ model Post {
   authorId  Int?
 }
 
+model Event {
+  id        Int     @default(autoincrement()) @id
+  title     String
+  content   String?
+  published Boolean @default(false)
+  author    User?   @relation(fields: [authorId], references: [id])
+  authorId  Int?
+  headerImage String?
+  backgroundImage String?
+  uniqueLink String?
+  expiresAt DateTime?
+  questions Question[]
+  userResponses UserQuestionAnswers[]
+}
+
+model Question {
+    id        Int     @default(autoincrement()) @id
+    event    Event   @relation(fields: [eventId], references: [id])
+    eventId  Int
+    title     String
+    desc   String?
+    userResponses UserQuestionAnswers[]
+    @@index([eventId], name: "eventId")
+    @@map(name: "questions")
+}
+
+model UserQuestionAnswers {
+  id        Int     @default(autoincrement()) @id
+  event    Event   @relation(fields: [eventId], references: [id])
+  eventId  Int
+  user    User   @relation(fields: [userId], references: [id])
+  userId  Int
+  question    Question   @relation(fields: [questionId], references: [id])
+  questionId  Int
+  videoResponseLink    String
+  @@index([userId], name: "userId")
+  @@index([eventId], name: "eventId")
+  @@map(name: "user_question_answers")
+
+}
+
+
 model User {
   id            Int       @default(autoincrement()) @id
   name          String?
@@ -31,7 +73,8 @@ model User {
   createdAt     DateTime  @default(now()) @map(name: "created_at")
   updatedAt     DateTime  @updatedAt @map(name: "updated_at")
   posts         Post[]
-
+  events        Event[]
+  assingedEvents UserQuestionAnswers[]
   @@map(name: "users")
 }
 
