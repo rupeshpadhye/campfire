@@ -4,13 +4,8 @@ import Layout from "../../../components/Layout";
 import { useSession } from "next-auth/client";
 import safeJsonStringify from 'safe-json-stringify';
 import prisma from "../../../lib/prisma";
-import styles from './../events.module.scss';
-import { Card, notification, Tabs } from "antd";
-import DeleteEvent from "../../../containers/DeleteEvent";
-import EventInformationForm from "../../../containers/EventInformationForm";
-import QuestionFormContainer from "../../../containers/QuestionFormContainer";
-import InviteContainer from '../../../containers/InviteContainer';
-import get from 'lodash/get';
+
+import EventContainer from "../../../containers/EventContainer";
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   const { id } = params;
@@ -40,40 +35,15 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
 
 };
 
-const { TabPane } = Tabs;
 
 const EditEvent: React.FC<{event}> = (props) => {
   const [session, loading] = useSession();
   const [eventData, setEventData] = React.useState(props.event);
   const { id } = props.event;
-  console.log(props.event);
-  if (loading) {
-    return <div>Authenticating ...</div>;
-  }
 
   return (
     <Layout>
-     <div className={styles.container}>
-     <Tabs defaultActiveKey="1">
-      <TabPane tab="Information" key="1">
-        <Card style={{ width: "800px" }}>
-          <EventInformationForm event={eventData} />
-        </Card>
-        <DeleteEvent event={eventData}/>
-      </TabPane>
-      { id && <TabPane tab="Questions" key="2">
-        <div style={{ width: "800px" }}>
-          <QuestionFormContainer event={eventData} setEventData={setEventData}/>
-        </div>
-      </TabPane> 
-      }
-      <TabPane tab="Participants" key="3">
-        <div style={{ width: "800px" }}>
-          <InviteContainer invites={get(eventData,'invites')}/>
-        </div>
-      </TabPane>
-        </Tabs>
-     </div>
+      <EventContainer event={eventData} setEventData={setEventData}/>
     </Layout>
   );
 };

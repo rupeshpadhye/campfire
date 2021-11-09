@@ -11,7 +11,7 @@ import {
   Input,
 } from "antd";
 import { useRouter } from "next/router";
-import { Invite } from "./../../types";
+import { Invite } from "../../../types";
 
 type inviteProp = {
   invites: Invite[];

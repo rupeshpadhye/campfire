@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import { Card, Modal, notification, Tabs } from "antd";
 import { Form, Button, Input } from "antd";
 
-import QuestionCards from "../../components/QuestionCards";
-import LoomRecordButton from "../../components/Video/RecordButton";
-import VideoPreview from "../../components/Video/VideoPreview";
+import QuestionCards from "../../../components/QuestionCards";
+import LoomRecordButton from "../../../components/Video/RecordButton";
+import VideoPreview from "../../../components/Video/VideoPreview";
 
 const QuestionForm = (props) => {
   const [form] = Form.useForm();
@@ -75,6 +75,7 @@ const QuestionForm = (props) => {
 const QuestionFormContainer = ({ 
   event,
   setEventData,
+  isPreview,
 }) => {
   const { id, questions } = event || { questions: [] };
   const [showQuestionModal ,setShowQuestionModal] = useState(false);
@@ -152,20 +153,36 @@ const QuestionFormContainer = ({
   }
   return (
     <>
-    <Modal 
-    visible={showQuestionModal}
-    title={
-      editQuestion ? `Edit Question`: 'Add New Question'
-    }
-    forceRender={true}
-    footer={null}
-    onCancel={() => setShowQuestionModal(false)}
-    >
-      <QuestionForm question={editQuestion} onSuccess={handleEdiModalSave} saving={saving}/>
-    </Modal>
-    <Card bordered={false} title='Add New Question' extra={<div><Button type='primary' onClick={creteNewQuestion}>New Question</Button></div>}>
-      <QuestionCards questions={questions} handleEdit={handleQuestionEdit} handleDelete={handleQuestionDelete}/>
-    </Card>
+      <Modal
+        visible={showQuestionModal}
+        title={editQuestion ? `Edit Question` : "Add New Question"}
+        forceRender={true}
+        footer={null}
+        onCancel={() => setShowQuestionModal(false)}
+      >
+        <QuestionForm
+          question={editQuestion}
+          onSuccess={handleEdiModalSave}
+          saving={saving}
+        />
+      </Modal>
+      <Card
+        bordered={false}
+        title="Add New Question"
+        extra={
+          <div>
+            <Button type="primary" onClick={creteNewQuestion} disabled={isPreview}>
+              New Question
+            </Button>
+          </div>
+        }
+      >
+        <QuestionCards
+          questions={questions}
+          handleEdit={handleQuestionEdit}
+          handleDelete={handleQuestionDelete}
+        />
+      </Card>
     </>
   );
 };

@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import React, { ReactNode, useState } from "react";
 
 import { useRouter } from "next/router";
 import { signOut, useSession } from "next-auth/client";
@@ -19,44 +19,63 @@ import {
   UserOutlined,
   UploadOutlined,
   VideoCameraOutlined,
+  BankOutlined
 } from '@ant-design/icons';
 type Props = {
   children: ReactNode;
 };
 
+const creatorMenu = [
+  {
+    id: '1',
+    title: 'Dashboard',
+    icon: <BarChartOutlined />,
+    link: '/dashboard',
+  },
+  { id: '2',
+    title: 'Events',
+    icon: <VideoCameraOutlined />,
+    link: '/events',
+  },
+  {
+    id: '3',
+    title: 'Subscription',
+    icon: <BankOutlined />,
+    link: '/subscription',
+  },
+  { id: '4',
+    title: 'Profile',
+    icon: <UserOutlined />,
+    link: '/profile',
+  }
+]
+
 const AppLayout: React.FC<Props> = (props) => {
   const router = useRouter();
   const [session, loading] = useSession();
+  const [ key, setKey ] = useState('1');
+  const handleMenuClick = ({item, key}) => {
+    setKey(key);
+    const menu = creatorMenu.find(item => item.id === key);
+    router.push(menu.link);
+  }
 
-  const getMenu = () => {
+  const getSider = () => {
     const role = get(session, "user.role");
     if(role === 'creator') {
       return  ( 
-      <Menu  mode="inline" defaultSelectedKeys={['1']}>
-      <Menu.Item key="1" icon={<UserOutlined />}>
-        Create Events
-      </Menu.Item>
-      <Menu.Item key="2" icon={<UserOutlined />}>
-        Events
-      </Menu.Item>
-      <Menu.Item key="3" icon={<VideoCameraOutlined />}>
-        Subscription
-      </Menu.Item>
-      <Menu.Item key="4" icon={<UserOutlined />} className={styles.logoutItem}>
-         Profile
-        </Menu.Item>
-    </Menu>) 
-    } else {
-      return (
-        <Menu  mode="inline" defaultSelectedKeys={['1']}>
-        <Menu.Item key="1" icon={<UserOutlined />}>
-          Ongoing Events
-        </Menu.Item>
-        <Menu.Item key="4" icon={<UserOutlined />} className={styles.logoutItem}>
-         Profile
-        </Menu.Item>
-      </Menu>)
+      <Sider className={styles.layoutSider}>
+          <Menu  mode="inline" selectedKeys={[key]} onClick={handleMenuClick}>
+            {creatorMenu.map(item => (
+              <Menu.Item key={item.id} icon={item.icon}>
+                {item.title}
+              </Menu.Item>
+            ))}
+        </Menu>
+    </Sider>
+      )
     }
+    return null;
   }
   if(!session && !loading) { 
     router.push('/');
@@ -79,10 +98,8 @@ const AppLayout: React.FC<Props> = (props) => {
         </Button>
       </div>
       </Header>
-    <Layout>
-    <Sider className={styles.layoutSider}>
-      {getMenu()}
-    </Sider>
+    <Layout className={styles.layoutInnerContainer}>
+      {getSider()}
     <Content className={styles.layoutContent}>
       {props.children}
       <Footer></Footer>

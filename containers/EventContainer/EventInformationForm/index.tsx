@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Card, Modal, notification, Tabs } from "antd";
 import { Form, Button, Input } from "antd";
-import UploadButton from "../../components/UploadButton";
 import Router from "next/router";
+import UploadButton from "../../../components/UploadButton";
 
 
-const EventInformationForm = ({ event }) => {
+const EventInformationForm = ({ event, isPreview }) => {
     const [form] = Form.useForm();
     const [headerImage, setHeaderImage] = React.useState(null);
     const [saving, setSaving] = useState(false);
@@ -86,7 +86,7 @@ const EventInformationForm = ({ event }) => {
             />
           </Form.Item>
           <Form.Item wrapperCol={{ offset: 21 }}>
-            <Button type="primary" htmlType="submit" loading={saving}>
+            <Button type="primary" htmlType="submit" loading={saving} disabled={isPreview}>
               Save
             </Button>
           </Form.Item>

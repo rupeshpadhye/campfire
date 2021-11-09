@@ -23,7 +23,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   } else if(role === 'creator') {
     return {
       redirect: {
-        destination: '/events',
+        destination: '/dashboard',
         permanent: false,
       },
     }
