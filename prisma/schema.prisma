@@ -26,6 +26,7 @@ model Event {
   expiresAt DateTime?
   questions Question[]
   userResponses UserQuestionAnswers[]
+  invites EventInvite[]
 }
 
 model Question {
@@ -38,6 +39,16 @@ model Question {
     userResponses UserQuestionAnswers[]
     @@index([eventId], name: "eventId")
     @@map(name: "questions")
+}
+
+model EventInvite {
+  id        Int     @default(autoincrement()) @id
+  event    Event   @relation(fields: [eventId], references: [id])
+  eventId  Int  
+  email   String
+  status  String
+  @@index([eventId], name: "eventId")
+  @@map(name: "eventInvites")
 }
 
 model UserQuestionAnswers {
@@ -65,6 +76,7 @@ model User {
   createdAt     DateTime  @default(now()) @map(name: "created_at")
   updatedAt     DateTime  @updatedAt @map(name: "updated_at")
   events        Event[]
+  role          String  @default("participant")
   assingedEvents UserQuestionAnswers[]
   @@map(name: "users")
 }
@@ -99,4 +111,15 @@ model Session {
   updatedAt    DateTime @default(now()) @map(name: "updated_at")
 
   @@map(name: "sessions")
+}
+
+model VerificationRequest {
+  id           Int      @default(autoincrement()) @id
+  identifier   String   
+  expires      DateTime
+  token        String   @unique @map(name: "token")
+  createdAt    DateTime @default(now()) @map(name: "created_at")
+  updatedAt    DateTime @default(now()) @map(name: "updated_at")
+  @@index([token], name: "token")
+  @@map(name: "verification_requests")
 }

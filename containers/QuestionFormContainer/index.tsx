@@ -51,7 +51,7 @@ const QuestionForm = (props) => {
           label="You can add more description by recording a video."
         >
           <LoomRecordButton btnLabel='Record' onInsertClicked={handleInsertClicked}/>
-          <VideoPreview videoData={question && question.videoData}/>
+          <VideoPreview videoData={videoData || (question && question.videoData)}/>
         </Form.Item>
         <Form.Item
           name="desc"

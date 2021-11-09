@@ -9,7 +9,8 @@ import { Card, notification, Tabs } from "antd";
 import DeleteEvent from "../../../containers/DeleteEvent";
 import EventInformationForm from "../../../containers/EventInformationForm";
 import QuestionFormContainer from "../../../containers/QuestionFormContainer";
-
+import InviteContainer from '../../../containers/InviteContainer';
+import get from 'lodash/get';
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   const { id } = params;
@@ -21,10 +22,10 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
       },
      include:{
        questions: true,
+       invites : true,
      }
     });
     event= JSON.parse(safeJsonStringify(event));
-    console.log('server side',event);
     if(!event) {
       return {
         props: { event: { questions:[]} } ,
@@ -45,7 +46,7 @@ const EditEvent: React.FC<{event}> = (props) => {
   const [session, loading] = useSession();
   const [eventData, setEventData] = React.useState(props.event);
   const { id } = props.event;
-
+  console.log(props.event);
   if (loading) {
     return <div>Authenticating ...</div>;
   }
@@ -65,9 +66,13 @@ const EditEvent: React.FC<{event}> = (props) => {
           <QuestionFormContainer event={eventData} setEventData={setEventData}/>
         </div>
       </TabPane> 
-      
       }
-      </Tabs>
+      <TabPane tab="Participants" key="3">
+        <div style={{ width: "800px" }}>
+          <InviteContainer invites={get(eventData,'invites')}/>
+        </div>
+      </TabPane>
+        </Tabs>
      </div>
     </Layout>
   );

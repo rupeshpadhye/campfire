@@ -1,10 +1,10 @@
-.siteLayout {
+.layoutContainer {
+    min-height: 100vh;
+}
+.layoutContent {
     display: flex;
     flex-direction: column;
-    min-height: 90vh;
-    background: rgb(250, 249, 251);
-    padding: 0 50px;
-    margin-top: 64px;
+     padding: 24px;
 }
 
 .header {
@@ -23,10 +23,16 @@
 
 .logoContainer {
     display: flex;
-    justify-content: flex-start;
+    padding: 16px;
+    justify-content: center;
     cursor: pointer;
 }
 
 .logoutBtn {
     color: #fff;
+}
+
+.layoutSider {
+    background: #fff;
+    border-right: 1px solid #e8e8e8;
 }

@@ -14,26 +14,12 @@ import FullScreenLoading from "../../components/FullScreenLoading";
 import animationData from "./../../lotties/snow.json";
 
 import CreateEvent from "./../../public/create_event.svg";
-import DefaultEventCardBG from "./../../public/celebration.svg";
+
+import { EventProp } from './../../types';
 
 import styles from "./events.module.scss";
 
 const { Meta } = Card;
-
-export type EventProp = {
-  id: number;
-  title: string;
-  author: {
-    name: string;
-    email: string;
-  } | null;
-  content: string;
-  published: boolean;
-  headerImage?: string;
-  backgroundImage?: string;
-  uniqueLink?: string;
-  expiresAt?: Date;
-};
 
 export type EventsProps = { events: Array<EventProp> };
 
@@ -90,6 +76,11 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   if (!session) {
     res.statusCode = 403;
     return { props: { events: [] } };
+  } else {
+     const { user } = session;
+     if(!user.name) {
+        return { props: { events: [], completeProfileModal: true } };
+     }
   }
 
   let events = await prisma.event.findMany({
@@ -103,6 +94,8 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
 
 const Events: React.FC<EventsProps> = (props) => {
   const [session, loading] = useSession();
+  console.log('session',session);
+
   const { events = [] } = props;
   console.log(events);
   return loading ? (
