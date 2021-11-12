@@ -8,6 +8,9 @@ const authHandler: NextApiHandler = (req, res) => NextAuth(req, res, options);
 export default authHandler;
 
 const options = {
+  pages: {
+    newUser: '/onboard',
+  },
   theme: 'light',
   providers: [
     Providers.GitHub({
@@ -23,19 +26,21 @@ const options = {
           pass: process.env.SMTP_PASSWORD
         },
       },
-      from: process.env.SMTP_FROM
+      from: process.env.SMTP_FROM,
     }),
   ],
   adapter: Adapters.Prisma.Adapter({ prisma }),
   secret: process.env.SECRET,
   callbacks: {
     async jwt(token, user, account, profile, isNewUser) {
+      console.log('isNewUser########', isNewUser, user);
       if (account?.accessToken) {
         token.accessToken = account.accessToken
       }
       if (user?.role) {
         token.role = user.role
       }
+      token.uid = user.id;
       return token
     },
     async session(session, token) {
@@ -44,6 +49,9 @@ const options = {
       }
       if (token?.role) {
         session.user.role = token.role
+      }
+      if(token?.uid) { 
+        session.user.uid = token.uid
       }
       return session
     }

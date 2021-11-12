@@ -6,6 +6,7 @@ import UploadButton from "../../../components/UploadButton";
 
 
 const EventInformationForm = ({ event, isPreview }) => {
+    console.log(event);
     const [form] = Form.useForm();
     const [headerImage, setHeaderImage] = React.useState(null);
     const [saving, setSaving] = useState(false);

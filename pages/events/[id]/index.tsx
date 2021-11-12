@@ -9,6 +9,7 @@ import EventContainer from "../../../containers/EventContainer";
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   const { id } = params;
+  console.log('id is',id)
   let event = null;
   if(parseInt(id)) { 
      event = await prisma.event.findUnique({
@@ -31,7 +32,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
     };
   }
 
-  return { props: { event: null , type: event ? 'edit': 'create'} };
+  return { props: { event: { questions:[] } , type: event ? 'edit': 'create'} };
 
 };
 
@@ -39,8 +40,9 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
 const EditEvent: React.FC<{event}> = (props) => {
   const [session, loading] = useSession();
   const [eventData, setEventData] = React.useState(props.event);
-  const { id } = props.event;
-
+  useEffect(() => {
+    setEventData(props.event);
+  }, [props.event])
   return (
     <Layout>
       <EventContainer event={eventData} setEventData={setEventData}/>

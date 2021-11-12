@@ -4,7 +4,6 @@ import { Card, Tabs } from "antd";
 import DeleteEvent from "./DeleteEvent";
 import EventInformationForm from "./EventInformationForm";
 import QuestionFormContainer from "./QuestionFormContainer";
-import InviteContainer from "./InviteContainer";
 import get from "lodash/get";
 
 import styles from "./EventContainer.module.scss";
@@ -35,11 +34,11 @@ const EventContainer = ({ event, setEventData }) => {
             </div>
           </TabPane>
         )}
-        {!isPreview && <TabPane tab="Participants" key="3">
+        {/* {!isPreview && <TabPane tab="Participants" key="3">
           <div style={{ width: "800px" }}>
-            <InviteContainer invites={get(event, "invites", [])} />
+            <InviteParticipants invites={get(event, "invites", [])} />
           </div>
-        </TabPane>}
+        </TabPane>} */}
       </Tabs>
     </div>
   );

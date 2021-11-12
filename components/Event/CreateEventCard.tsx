@@ -28,7 +28,7 @@ const CreateEventCard: React.FC<CreateEventCardProps> = ({ session }) => {
             <Col span={8}>
               <Typography.Title level={1}>
                 {" "}
-                Hi {session && session.user.name}!
+                Hi {session && session.user?.name}!
               </Typography.Title>
               <Typography.Title level={5}>Lets Create From Scratch!</Typography.Title>
               <Link href="/events/create">

@@ -159,6 +159,7 @@ const QuestionFormContainer = ({
         forceRender={true}
         footer={null}
         onCancel={() => setShowQuestionModal(false)}
+        maskClosable={false}
       >
         <QuestionForm
           question={editQuestion}

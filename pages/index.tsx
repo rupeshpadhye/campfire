@@ -13,7 +13,7 @@ import { GetServerSideProps } from "next";
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   const session = await getSession({ req });
   const role = get(session, 'user.role');
-  if(role === 'participant') {
+  if(role === 'member') {
     return {
       redirect: {
         destination: '/home',

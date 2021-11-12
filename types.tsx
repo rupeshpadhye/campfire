@@ -5,6 +5,15 @@ export type Invite = {
     status: string,
 }
 
+export type User = {
+  id: string,
+  name?: string,
+  email: string,
+  emailVerified? : Date
+  image? : string,
+  role?: string,
+}
+
 export type EventProp = {
     id: number;
     title: string;

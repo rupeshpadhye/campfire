@@ -25,7 +25,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
     return { props: { events: [] } };
   } else {
      const { user } = session;
-     if(!user.name) {
+     if(!user?.name) {
         return { props: { events: [], completeProfileModal: true } };
      }
   }

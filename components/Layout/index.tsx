@@ -1,4 +1,4 @@
-import React, { ReactNode, useState } from "react";
+import React, { ReactNode, useState, useEffect } from "react";
 
 import { useRouter } from "next/router";
 import { signOut, useSession } from "next-auth/client";
@@ -8,18 +8,15 @@ import { Button, Layout, Menu} from 'antd';
 
 const {Header,Content, Sider, Footer } = Layout;
 import get from 'lodash/get';
+import flatten from 'lodash/flatten';
 import styles from './Layout.module.scss';
 import Logo from "../Logo";
 import {
-  AppstoreOutlined,
   BarChartOutlined,
-  CloudOutlined,
-  ShopOutlined,
-  TeamOutlined,
   UserOutlined,
-  UploadOutlined,
   VideoCameraOutlined,
-  BankOutlined
+  BankOutlined,
+  SettingOutlined
 } from '@ant-design/icons';
 type Props = {
   children: ReactNode;
@@ -31,24 +28,40 @@ const creatorMenu = [
     title: 'Dashboard',
     icon: <BarChartOutlined />,
     link: '/dashboard',
+    subMenu: []
   },
   { id: '2',
     title: 'Events',
     icon: <VideoCameraOutlined />,
     link: '/events',
+    subMenu: []
   },
   {
     id: '3',
-    title: 'Subscription',
-    icon: <BankOutlined />,
-    link: '/subscription',
+    title: 'Setting',
+    icon: <SettingOutlined />,
+    link: '/settings', 
+    subMenu: [
+      {
+      id: '3.1',
+      title: 'Members',
+      link: '/settings/members',
+    },
+    {
+      id: '3.2',
+      title: 'Subscription',
+      link: '/settings/subscription',
+    }]
   },
   { id: '4',
     title: 'Profile',
     icon: <UserOutlined />,
     link: '/profile',
-  }
+    subMenu: []
+  },
+
 ]
+
 
 const AppLayout: React.FC<Props> = (props) => {
   const router = useRouter();
@@ -60,6 +73,15 @@ const AppLayout: React.FC<Props> = (props) => {
     router.push(menu.link);
   }
 
+  useEffect(() => {
+    console.log(router.pathname);
+    const menuItems = flatten(creatorMenu);
+    const menu = menuItems.find(item => router.pathname.includes(item.link));
+    if(menu) {
+      setKey(menu.id);
+    }
+  }, [router.pathname])
+
   const getSider = () => {
     const role = get(session, "user.role");
     if(role === 'creator') {
@@ -69,7 +91,7 @@ const AppLayout: React.FC<Props> = (props) => {
             {creatorMenu.map(item => (
               <Menu.Item key={item.id} icon={item.icon}>
                 {item.title}
-              </Menu.Item>
+                </Menu.Item>
             ))}
         </Menu>
     </Sider>

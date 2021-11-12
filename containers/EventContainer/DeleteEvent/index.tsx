@@ -25,7 +25,7 @@ const DeleteEvent = ({ event }) => {
       }
   
   }
-    const { id } = event;
+    const  id  = event?.id;
     return (
       id ? <Card
         loading={false}

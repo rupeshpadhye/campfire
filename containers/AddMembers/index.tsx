@@ -11,10 +11,10 @@ import {
   Input,
 } from "antd";
 import { useRouter } from "next/router";
-import { Invite } from "../../../types";
+import { User } from "../../types";
 
-type inviteProp = {
-  invites: Invite[];
+type memberProps = {
+  members: User[];
 };
 
 const InviteItemTag = ({ email, handleClose }) => {
@@ -45,6 +45,7 @@ const InviteForm = ({
   const [invites, setInvites] = useState([]);
 
   const handleSubmit = () => {
+    console.log("handleSubmit", invites);
     onSubmit(invites);
     form.resetFields();
     setInputValue("");
@@ -69,19 +70,18 @@ const InviteForm = ({
 
   return (
     <Modal
-      closable={false}
       visible={showInviteModal}
-      title="Add Participants"
+      title="Add Members"
       footer={
         <div>
-          <Button type="primary" htmlType="submit" loading={saving}>
+          <Button type="primary" htmlType="submit" loading={saving} onClick={handleSubmit}>
             {saving ? "Sending Invites" : `Send(${invites.length}) Invite`}
           </Button>
         </div>
       }
       onCancel={() => setShowInviteModal(false)}
     >
-      <Form onFinish={handleSubmit} layout="vertical" form={form}>
+      <Form layout="vertical" form={form}>
         <Form.Item
           name="title"
           label="Type Email Address And Press Enter"
@@ -112,27 +112,26 @@ const InviteForm = ({
   );
 };
 
-const InviteContainer: React.FC<inviteProp> = ({ invites }) => {
+const AddMembers: React.FC<memberProps> = ({ members }) => {
   const [showInviteModal, setShowInviteModal] = React.useState(false);
   const [saving, setSaving] = useState(false);
   const router = useRouter();
-  const { id: eventId } = router.query;
-  const [ inviteData, setInviteData ] = useState(invites);
+  const [ inviteData, setInviteData ] = useState(members);
 
 
   const handleRemoveInvite = async (invite) => {
     const { id } = invite;
     try {
-      await fetch(`/api/invite/${id}`, {
+      await fetch(`/api/members/${id}`, {
         method: "DELETE",
       }).then((res) => res.json());
       notification.info({
-        message: "Participant Removed From Event.",
+        message: "Members Removed From The Platform",
       });
     } catch (error) {
       console.log(error);
       notification.error({
-        message: "Error Removing Participant.",
+        message: "Error Removing Member.",
       });
     }
   };
@@ -142,17 +141,21 @@ const InviteContainer: React.FC<inviteProp> = ({ invites }) => {
 
     setSaving(true);
     const resp = await fetch(
-        `/api/invite/?eventId=${eventId}`,{
+        `/api/members`,{
         method: "POST", 
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({invites}),
+        body: JSON.stringify({ members:invites}),
       }).then(res => res.json());  
       setSaving(false);
       setShowInviteModal(false);
+      console.log(resp);
       setInviteData(resp);
    }
     catch(e) {
       console.log(e);
+    }
+    finally{
+      setSaving(false);
     }
   }
 
@@ -165,7 +168,6 @@ const InviteContainer: React.FC<inviteProp> = ({ invites }) => {
     handleAddInvites(invite);
   };
 
-  if (!invites.length) return null;
   return (
     <div>
       <InviteForm
@@ -182,13 +184,14 @@ const InviteContainer: React.FC<inviteProp> = ({ invites }) => {
           type="primary"
           style={{ marginBottom: "10px" }}
         >
-          Invite Participants
+          Add Members
         </Button>
       </div>
       <Card>
         <List
           itemLayout="horizontal"
           dataSource={inviteData}
+          locale={{ emptyText: "Add Members" }}
           renderItem={(i) => {
             return (
               <List.Item key={i.id}>
@@ -196,8 +199,8 @@ const InviteContainer: React.FC<inviteProp> = ({ invites }) => {
                   avatar={<Avatar>{i.email.charAt(0).toUpperCase()}</Avatar>}
                   title={i.email}
                 />
-                <Tag color={i.status === "pending" ? "magenta" : "green"}>
-                  {i.status}
+                <Tag color={i.emailVerified ?  "green": "magenta" }>
+                  {i.emailVerified ? "Email Verified" : "Not Verified"}
                 </Tag>
                 <Button danger type="link" onClick={() => removeInvite(i)}>
                   Remove
@@ -211,4 +214,4 @@ const InviteContainer: React.FC<inviteProp> = ({ invites }) => {
   );
 };
 
-export default InviteContainer;
+export default AddMembers;
