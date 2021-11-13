@@ -1,0 +1,29 @@
+.pricing {
+    margin-top: 24px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.pricingCard {
+    min-height: 300px;
+    ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        text-align: left;
+    }
+    @media only screen and (max-width: 768px) {
+       margin-bottom: 16px;
+    }
+}
+.joinPlanBtn {
+    margin: auto;
+}
+
+.perYear {
+    font-size: 14px;
+    color: #8c8c8c;
+    display: inline-block;
+}

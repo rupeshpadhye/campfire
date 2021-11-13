@@ -47,7 +47,7 @@ const UserRegister = ({ onSubmit, saving }) => {
 
 
 
-const RegisterCreator = ({ visible, setVisible }) => {
+const RegisterCreator = ({ visible, setVisible, plan }) => {
   const [saving , setSaving] = React.useState(false);
   const registerUser =  async (values) => { 
    
@@ -56,7 +56,7 @@ const RegisterCreator = ({ visible, setVisible }) => {
         `/api/register`,{
         method: "POST", 
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({info : values}),
+        body: JSON.stringify({info : values, plan}),
       }).then(res => res.json());
       console.log(resp);  
       await signIn('email', { email: values.email });

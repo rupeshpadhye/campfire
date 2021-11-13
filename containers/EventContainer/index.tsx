@@ -8,6 +8,7 @@ import get from "lodash/get";
 
 import styles from "./EventContainer.module.scss";
 import CopyEventTemplate from "./CopyEvenetTemplate";
+import InviteParticipants from "./InviteParticipants";
 
 const { TabPane } = Tabs;
 
@@ -34,11 +35,11 @@ const EventContainer = ({ event, setEventData }) => {
             </div>
           </TabPane>
         )}
-        {/* {!isPreview && <TabPane tab="Participants" key="3">
+        {!isPreview && <TabPane tab="Participants" key="3">
           <div style={{ width: "800px" }}>
             <InviteParticipants invites={get(event, "invites", [])} />
           </div>
-        </TabPane>} */}
+        </TabPane>}
       </Tabs>
     </div>
   );
