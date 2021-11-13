@@ -1,3 +1,5 @@
+@import './../../css/mixins.scss';
+
 .background {
     width: 100vw;
     margin-top: 96px;
@@ -60,10 +62,10 @@
 }
     
 .signInButton {
-    @include button;
+    @include primaryButton;
 }
 .joinButton {
-    @include button;
+    @include primaryButton;
     margin: auto;
 
 }

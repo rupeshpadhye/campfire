@@ -10,6 +10,8 @@ export default authHandler;
 const options = {
   pages: {
     newUser: '/onboard',
+    signIn: "/signin",
+    verifyRequest: '/verify-request',
   },
   theme: 'light',
   providers: [

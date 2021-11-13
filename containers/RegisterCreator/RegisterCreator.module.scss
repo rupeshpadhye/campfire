@@ -1,0 +1,17 @@
+@import './../../css/mixins.scss';
+
+.modalTitle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    h1 {
+        font-size: 1.5rem;
+        margin: 0;
+    }
+}
+
+.registerBtn {
+    margin: auto;
+    @include primaryButton;
+    height: 48px;
+}

@@ -36,7 +36,7 @@ const Plans = ({selectedPlan}) => {
                             Join Now
                     </Button>
                 ]}>
-            <h2>499$<p className={styles.perYear}>/year</p></h2>
+            <h2>499$ <p className={styles.perYear}>/year</p></h2>
             <ul>
             <li>  <CheckCircleTwoTone twoToneColor="#52c41a" /> Unlimited Team Activities </li>
             <li> <CheckCircleTwoTone twoToneColor="#52c41a" />  Integrations</li>
