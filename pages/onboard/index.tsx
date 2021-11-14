@@ -30,29 +30,21 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
         } 
 
         //TODO if there is no event invite should show register model
-    
-    
-        
-
-        // else  if(!session.user.name) {
-        //         return {
-        //             redirect: {
-        //             destination: '/profile?complete=false',
-        //             permanent: false,
-        //             },
-        //         };
-        // } else {
-        //         return {
-        //                 redirect: {
-        //                 destination: '/',
-        //                 permanent: false,
-        //                 },
-        //             };
-        // }         
-        return {
-            props: {
-            },
-        }
+         if(!session.user.name) {
+                return {
+                    redirect: {
+                    destination: '/profile?complete=false',
+                    permanent: false,
+                    },
+                };
+        } else {
+                return {
+                        redirect: {
+                        destination: '/',
+                        permanent: false,
+                        },
+                    };
+        }         
     }
 }
 
