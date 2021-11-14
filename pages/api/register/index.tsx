@@ -3,15 +3,18 @@ import prisma from "../../../lib/prisma";
 export default async function handle(req, res) {
   const { info } = req.body;
   try {
-    const result = await prisma.pendingUser.create({
-      data: {
-          ...info,
-      },
-    });
+    const result = await Promise.all([
+      prisma.pendingUser.create({
+        data: {
+            ...info,
+        },
+      }),
+    ]) ;
     res.json(result);
   } catch (e) {
+    console.error(e);
     res.status(500).json({
-      message: "Registered before? Sign in via same email to complete registration",
+      message: "Something went wrong!",
     });
   }
   

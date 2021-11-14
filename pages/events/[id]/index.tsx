@@ -8,10 +8,8 @@ import prisma from "../../../lib/prisma";
 import EventContainer from "../../../containers/EventContainer";
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
-  const { id } = params;
-  console.log('id is',id)
   let event = null;
-  if(parseInt(id)) { 
+  if(Number(params?.id)) { 
      event = await prisma.event.findUnique({
       where: {
         id: Number(params?.id) || -1,

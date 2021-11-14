@@ -35,7 +35,7 @@ const CopyEventTemplate = ({ event }) => {
     return (
       id ? <Card
         loading={false}
-        title={`Copy Template`}
+        title={`Copy ${event.title}`}
         style={{marginTop: "16px"}}
         extra={
           <Button
@@ -47,7 +47,7 @@ const CopyEventTemplate = ({ event }) => {
             Copy Template
           </Button>
         }>
-          The description and all associated data will be copied to the new event.
+           You can edit the event after it is created. The description and all associated data will be copied to the new event.
         </Card> : null)
   }
 

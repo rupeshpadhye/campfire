@@ -70,7 +70,7 @@ const RegisterCreator = ({ visible, setVisible, plan }) => {
         `/api/register`,{
         method: "POST", 
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({info : values, plan}),
+        body: JSON.stringify({ info: { ...values,planId: plan } }),
       }).then(res => {
         if(res.status === 200){
           setSaving(false);

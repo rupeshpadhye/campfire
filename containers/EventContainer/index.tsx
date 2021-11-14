@@ -17,12 +17,15 @@ const EventContainer = ({ event, setEventData }) => {
   const isPreview = get(event, "type") === 'template';
   return (
     <div className={styles.container}>
+      <div style={{ width: "800px" }}>
+      {isPreview ? <CopyEventTemplate event={event}/> : null }
+      </div>
       <Tabs defaultActiveKey="1">
         <TabPane tab="Information" key="1">
           <Card style={{ width: "800px" }}>
             <EventInformationForm event={event} isPreview={isPreview} />
           </Card>
-          {isPreview ? <CopyEventTemplate event={event}/> : <DeleteEvent event={event} /> }
+          {!isPreview ? <DeleteEvent event={event} /> : null}
         </TabPane>
         {id && (
           <TabPane tab="Questions" key="2">

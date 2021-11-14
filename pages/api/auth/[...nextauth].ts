@@ -13,7 +13,6 @@ const options = {
     signIn: "/signin",
     verifyRequest: '/verify-request',
   },
-  theme: 'light',
   providers: [
     Providers.GitHub({
       clientId: process.env.GITHUB_ID,

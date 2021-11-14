@@ -23,7 +23,7 @@ const EventInformationForm = ({ event, isPreview }) => {
           id ? `/api/event/${id}`: `/api/event`, {
           method: id ? "PUT" : "POST",
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ event}),
+          body: JSON.stringify({ event , eventType: event.eventType || 'celebration' }),
         }).then(response => response.json());  
         if(!id) {
           notification.success({

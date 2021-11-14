@@ -5,7 +5,7 @@ import styles from './../events.module.scss';
 import { Card, notification, Tabs } from "antd";
 
 import get from 'lodash/get';
-import { templates } from "../data";
+import { templates } from "../../api/data";
 import EventContainer from "../../../containers/EventContainer";
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   const { id } = params;

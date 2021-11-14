@@ -24,7 +24,7 @@ const UploadButton = (props) => {
          {fileURL && <Image src={fileURL} alt="uploaded" width='100px' height={100}/>}
           <Button type='text' danger onClick={() => removeFile()}> Click To Remove File </Button>
         </div>
-        <Button type="secondary" onClick={() => setShowFileUploadOverlay(true)}>
+        <Button type="default" onClick={() => setShowFileUploadOverlay(true)}>
           {label}
         </Button>
       </div>

@@ -10,6 +10,9 @@
   "keywords": [],
   "author": "",
   "license": "MIT",
+  "prisma": {
+    "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
+  },
   "dependencies": {
     "@ant-design/icons": "^4.7.0",
     "@loomhq/loom-embed": "^1.2.7",

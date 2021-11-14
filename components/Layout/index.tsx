@@ -23,37 +23,30 @@ type Props = {
 };
 
 const creatorMenu = [
-  {
-    id: '1',
-    title: 'Dashboard',
-    icon: <BarChartOutlined />,
-    link: '/dashboard',
-    subMenu: []
-  },
-  { id: '2',
-    title: 'Events',
+  { id: '1',
+    title: 'Team Activities',
     icon: <VideoCameraOutlined />,
     link: '/events',
     subMenu: []
   },
   {
-    id: '3',
+    id: '2',
     title: 'Setting',
     icon: <SettingOutlined />,
     link: '/settings', 
     subMenu: [
       {
-      id: '3.1',
+      id: '2.1',
       title: 'Members',
       link: '/settings/members',
     },
     {
-      id: '3.2',
+      id: '2.2',
       title: 'Subscription',
       link: '/settings/subscription',
     }]
   },
-  { id: '4',
+  { id: '3',
     title: 'Profile',
     icon: <UserOutlined />,
     link: '/profile',

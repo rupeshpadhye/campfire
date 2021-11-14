@@ -1,8 +1,29 @@
+
 import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 async function main() {
-  // Do stuff
+  const plans = [ {
+    id: 'free',
+    name: "Free",
+    price: 0,
+    features: {},
+  },
+  {
+    id: 'basic',
+    name: "Basic",
+    price: 400,
+    features: {},
+  }
+  ,{
+    id: 'pro',
+    name: "Pro",
+    price: 1000,
+    features: {},
+  }];
+  await prisma.plans.createMany({
+    data: plans 
+  });
 }
 
 main()

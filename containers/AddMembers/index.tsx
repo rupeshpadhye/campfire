@@ -10,7 +10,7 @@ import {
   Form,
   Input,
 } from "antd";
-import { useRouter } from "next/router";
+import { Router, useRouter } from "next/router";
 import { User } from "../../types";
 
 type memberProps = {
@@ -45,7 +45,6 @@ const InviteForm = ({
   const [invites, setInvites] = useState([]);
 
   const handleSubmit = () => {
-    console.log("handleSubmit", invites);
     onSubmit(invites);
     form.resetFields();
     setInputValue("");
@@ -115,7 +114,6 @@ const InviteForm = ({
 const AddMembers: React.FC<memberProps> = ({ members }) => {
   const [showInviteModal, setShowInviteModal] = React.useState(false);
   const [saving, setSaving] = useState(false);
-  const router = useRouter();
   const [ inviteData, setInviteData ] = useState(members);
 
 
@@ -128,6 +126,8 @@ const AddMembers: React.FC<memberProps> = ({ members }) => {
       notification.info({
         message: "Members Removed From The Platform",
       });
+      setInviteData(inviteData.filter((i) => i.id !== id));
+    
     } catch (error) {
       console.log(error);
       notification.error({
@@ -148,8 +148,7 @@ const AddMembers: React.FC<memberProps> = ({ members }) => {
       }).then(res => res.json());  
       setSaving(false);
       setShowInviteModal(false);
-      console.log(resp);
-      setInviteData(resp);
+      setInviteData([...resp.members,...inviteData ]);
    }
     catch(e) {
       console.log(e);

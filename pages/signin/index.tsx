@@ -1,11 +1,17 @@
    
-import { providers, signIn, getSession, csrfToken } from "next-auth/client";
+import { providers, signIn, getSession, csrfToken, Provider } from "next-auth/client";
 import { Header, Banner } from "./../../components/LandingPage";
 import { Button, Input, Row, Col, Divider, Form, Alert } from 'antd';
-
 import styles from "./signin.module.scss";
 import { GithubOutlined,GoogleOutlined  } from '@ant-design/icons';
 
+type Provider = {
+  type: string;
+  signinUrl: string;
+  credentials: boolean;
+  name: string;
+  id: string;
+}
 export async function getServerSideProps(context) {
   const { req } = context;
   const session = await getSession({ req });
@@ -18,7 +24,7 @@ export async function getServerSideProps(context) {
 
   return {
     props: {
-      providers: await providers(context),
+      providers: await providers(),
       csrfToken: await csrfToken(context),
     },
   };
@@ -35,6 +41,7 @@ const getIcon = (provider) => {
   }
 }
 
+
 function signin({
   csrfToken,
   providers,
@@ -43,7 +50,7 @@ function signin({
   error: errorType,
 }) {
 
-  const providersToRender =  Object.values(providers).filter((provider) => {
+const providersToRender =  Object.values(providers).filter((provider: Provider) => {
     if (provider.type === "oauth" || provider.type === "email") {
       return true
     } else if (provider.type === "credentials" && provider.credentials) {
@@ -68,7 +75,9 @@ function signin({
   }
 
   const error = errorType && (errors[errorType] ?? errors.default)
-  const emailProvider =  providersToRender.find((provider) => provider.type === "email");
+  const emailProvider =  providersToRender
+                        .find(
+                          (provider : Provider): Boolean => provider.type === "email");
 
 
   return (
@@ -91,7 +100,7 @@ function signin({
       <div className={styles.provider}>
         <h3>Sign In with</h3>
         {
-          providersToRender.filter((provider) => provider.type === "oauth").map((provider) =>  (
+          providersToRender.filter((provider : Provider) => provider.type === "oauth").map((provider: Provider) =>  (
             <form action={provider.signinUrl} method="POST">
             <input type="hidden" name="csrfToken" value={csrfToken} />
             {callbackUrl && (
@@ -106,10 +115,11 @@ function signin({
       <Divider/>
       <h3>Sign In with Email</h3>
       { emailProvider ? 
-      ( 
+      ( //@ts-ignore
         <form action={emailProvider.signinUrl} method="POST">
         <input type="hidden" name="csrfToken" value={csrfToken} />
         <input
+          //@ts-ignore
           id={`input-email-for-${emailProvider.id}-provider`}
           autoFocus
           type="email"

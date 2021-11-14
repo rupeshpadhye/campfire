@@ -12,7 +12,8 @@ import { GetServerSideProps } from "next";
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   const session = await getSession({ req });
-  const role = get(session, 'user.role');
+  if(session && session.user) {
+    const role = get(session, 'user.role');
   if(role === 'member') {
     return {
       redirect: {
@@ -23,11 +24,13 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   } else if(role === 'creator') {
     return {
       redirect: {
-        destination: '/dashboard',
-        permanent: false,
+        destination: '/events',
+        permanent: true,
       },
     }
   } 
+  }
+
   return {
     props: {},
   }
