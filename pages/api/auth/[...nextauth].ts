@@ -1,3 +1,4 @@
+import { signOut } from 'next-auth/client';
 import { NextApiHandler } from "next";
 import NextAuth from "next-auth";
 import Providers from "next-auth/providers";
@@ -12,6 +13,7 @@ const options = {
     newUser: '/onboard',
     signIn: "/signin",
     verifyRequest: '/verify-request',
+    signOut: '/',
   },
   providers: [
     Providers.GitHub({

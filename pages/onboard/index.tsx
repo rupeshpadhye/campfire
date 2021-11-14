@@ -29,22 +29,36 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
                 }});
         } 
 
-        //TODO if there is no event invite should show register model
-         if(!session.user.name) {
-                return {
-                    redirect: {
-                    destination: '/profile?complete=false',
-                    permanent: false,
-                    },
-                };
-        } else {
-                return {
+        // //TODO if there is no event invite should show register model
+        //  if(!session.user.name) {
+        //         return {
+        //             redirect: {
+        //             destination: '/profile?complete=false',
+        //             permanent: false,
+        //             },
+        //         };
+        // } else {
+        //         return {
+        //                 redirect: {
+        //                 destination: '/',
+        //                 permanent: false,
+        //                 },
+        //             };
+        // } 
+        if(!session.user.name) {
+                    return {
                         redirect: {
-                        destination: '/',
+                        destination: '/profile?complete=false',
                         permanent: false,
                         },
                     };
-        }         
+        }
+        return {
+            redirect: {
+            destination: '/',
+            permanent: false,
+            },
+        };        
     }
 }
 
