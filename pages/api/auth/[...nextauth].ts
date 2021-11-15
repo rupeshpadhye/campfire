@@ -13,7 +13,6 @@ const options = {
     newUser: '/onboard',
     signIn: "/signin",
     verifyRequest: '/verify-request',
-    signOut: '/',
   },
   providers: [
     Providers.GitHub({
