@@ -108,9 +108,11 @@ const AppLayout: React.FC<Props> = (props) => {
       </div>
      </Link>
       <div className={styles.right}>
-        <Button type='text' className={styles.logoutBtn} onClick={() => handleSignOut()}>
+        <Link href='/auth/signout'>
+        <Button type='text' className={styles.logoutBtn}>
           Log out
         </Button>
+        </Link>
       </div>
       </Header>
     <Layout className={styles.layoutInnerContainer}>

@@ -22,6 +22,15 @@ export type EventsProps = { events: Array<EventProp>, templateEvents: Array<Even
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   const session = await getSession({ req });
+  if(!session) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: true,
+      },
+    }
+  }
+
   let events = await prisma.event.findMany({
     where: {
       author: { email: session.user.email },
@@ -34,7 +43,6 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
 const Events: React.FC<EventsProps> = (props) => {
   const [session, loading] = useSession();
   const { events = [], templateEvents= [] } = props;
-  console.log(events);
   return loading ? (
     <FullScreenLoading />
   ) : (

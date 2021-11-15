@@ -16,7 +16,7 @@ const EventsList = ({ events, isPreview, title, desc }) => {
         {events.map((event) => {
           return (
             <Col span={4} key={event.id}>
-              <Link href={isPreview ? `/dashboard/template/${event.id}` : `/events/${event.id}`}>
+              <Link href={isPreview ? `/events/template/${event.id}` : `/events/${event.id}`}>
                 <Card
                   hoverable
                   className={styles.eventCard}
