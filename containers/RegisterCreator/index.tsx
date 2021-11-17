@@ -34,7 +34,7 @@ const UserRegister = ({ onSubmit, saving }) => {
       </Form.Item>
       <Form.Item
         name="email"
-        label="Email"
+        label="Company Email"
         rules={[{ required: true, type: "email", message: "Please Input Valid Email" }]}
       >
         <Input />

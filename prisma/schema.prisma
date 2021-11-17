@@ -46,7 +46,8 @@ model EventInvite {
   id        Int     @default(autoincrement()) @id
   event    Event   @relation(fields: [eventId], references: [id])
   eventId  Int  
-  email   String
+  user    User   @relation(fields: [userId], references: [id])
+  userId   Int
   status  String
   @@index([eventId], name: "eventId")
   @@map(name: "eventInvites")
@@ -81,6 +82,7 @@ model User {
   assingedEvents UserQuestionAnswers[]
   membershipManager  Members[] @relation("membershipManager")
   members Members[] @relation("user")
+  eventsInvitedTo EventInvite[] 
   organization Organization? 
   organizationId Int?
   @@map(name: "users")

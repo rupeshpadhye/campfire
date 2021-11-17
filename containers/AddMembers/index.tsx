@@ -176,6 +176,9 @@ const AddMembers: React.FC<memberProps> = ({ members }) => {
         setShowInviteModal={setShowInviteModal}
       />
       <div>
+        <div>
+        <h1>Members Information</h1>
+
         <Button
           onClick={() => {
             setShowInviteModal(true);
@@ -185,6 +188,7 @@ const AddMembers: React.FC<memberProps> = ({ members }) => {
         >
           Add Members
         </Button>
+        </div>
       </div>
       <Card>
         <List

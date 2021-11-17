@@ -16,7 +16,18 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
       },
      include:{
        questions: true,
-       invites : true,
+       invites : {
+          select: {
+            id: true,
+            user: { 
+              select: {
+                id: true,
+                email: true,
+                name: true,
+              },
+            }
+          }
+       },
      }
     });
     event= JSON.parse(safeJsonStringify(event));

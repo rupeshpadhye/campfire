@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Avatar,
   List,
@@ -8,13 +8,19 @@ import {
   notification,
   Modal,
   Form,
-  Input,
+  Select,
+  Alert,
+  Spin,
 } from "antd";
 import { Router, useRouter } from "next/router";
 import { User } from "../../../types";
 
+import differenceBy from 'lodash/differenceBy';
+const { Option } = Select;
+
 type inviteProps = {
     invites: User[];
+    eventId: number;
 };
 
 const InviteItemTag = ({ email, handleClose }) => {
@@ -38,34 +44,45 @@ const InviteForm = ({
   saving,
   setShowInviteModal,
   showInviteModal,
+  invites,
 }) => {
   const [form] = Form.useForm();
-  const saveInputRef = useRef(null);
-  const [inputValue, setInputValue] = useState("");
-  const [invites, setInvites] = useState([]);
+  const [ members, setMembers ] = useState([]);
+  const [ loading , setLoading ] = useState(false);
+  const [ error, setError ] = useState(null);
+  const fetchMembers = async () => {
+    try {
+      setLoading(true);
+      const res = await fetch("/api/members");
+      const members = await res.json();
+      const inviteMembers = differenceBy(members,invites,'email');
+      if(inviteMembers.length){
+        setMembers(inviteMembers);
+        setLoading(false);
+      } else {
+        setError('All members are invited.')
+      }
+
+    } catch(e) {
+      console.log(e);
+      setLoading(false);
+    }
+ 
+  }
+ useEffect(() => {
+   if(setShowInviteModal && members.length <= 0) {
+     fetchMembers();
+   }
+  
+ }, [setShowInviteModal])
 
   const handleSubmit = () => {
-    onSubmit(invites);
-    form.resetFields();
-    setInputValue("");
-  };
-  const removeInvite = (email) => {
-    const newInvites = invites.filter((invite) => invite !== email);
-    setInvites(newInvites);
+    form.validateFields().then((values) => {
+      onSubmit(values);
+      form.resetFields();
+    })
   };
 
-  const handleInputChange = (e) => {
-    setInputValue(e.target.value);
-  };
-
-  const handleInputConfirm = () => {
-    let inviteTemp = [...invites];
-    if (inputValue && invites.indexOf(inputValue) === -1) {
-      inviteTemp = [...invites, inputValue];
-    }
-    setInvites(inviteTemp);
-    setInputValue("");
-  };
 
   return (
     <Modal
@@ -73,45 +90,41 @@ const InviteForm = ({
       title="Invite Members"
       footer={
         <div>
-          <Button type="primary" htmlType="submit" loading={saving} onClick={handleSubmit}>
-            {saving ? "Sending Invites" : `Send(${invites.length}) Invite`}
+          <Button 
+            type="primary" 
+            htmlType="submit"
+            loading={saving} 
+            onClick={handleSubmit} 
+            disabled={loading}>
+            {saving ? "Sending Invites" : `Send Invite`}
           </Button>
         </div>
       }
       onCancel={() => setShowInviteModal(false)}
     >
-      <Form layout="vertical" form={form}>
-        <Form.Item
-          name="title"
-          label="Type Email Address And Press Enter"
-          rules={[
-            {
-              required: false,
-              message: "Please type email address e.g. abc@gmail.com",
-              whitespace: true,
-            },
-            { type: "email", message: "The input is not valid E-mail!" },
-          ]}
-        >
-          <Input
-            ref={saveInputRef}
-            type="text"
-            size="small"
-            value={inputValue}
-            onChange={handleInputChange}
-            onBlur={handleInputConfirm}
-            onPressEnter={handleInputConfirm}
-          />
+      { error && <Alert type="info" showIcon message={error} style={{ marginBottom: '16px'}} /> }
+      { loading && !error ? <Spin/> :<Form layout="vertical" form={form} >
+      <Form.Item name="invites" label="Add Team Member" rules={[{ required: true }]}>
+          <Select
+            placeholder="Add team members."
+            allowClear
+            mode="multiple"
+            disabled={loading}
+          >
+           { members.map((member) => (<Option key={member.id} value={member.id}>
+             <div>
+                <Avatar src={member.avatar}/>
+                <span style={{ marginLeft: "10px" }}>{member.name || member.email}</span>    
+             </div>
+            </Option>))}
+          </Select>
         </Form.Item>
-        {invites.map((i) => (
-          <InviteItemTag key={i} email={i} handleClose={removeInvite} />
-        ))}
-      </Form>
+      </Form>}
     </Modal>
   );
 };
 
-const InviteParticipants: React.FC<inviteProps> = ({ invites }) => {
+const InviteParticipants: React.FC<inviteProps> = ({ invites, eventId }) => {
   const [showInviteModal, setShowInviteModal] = React.useState(false);
   const [saving, setSaving] = useState(false);
   const [ inviteData, setInviteData ] = useState(invites);
@@ -131,25 +144,24 @@ const InviteParticipants: React.FC<inviteProps> = ({ invites }) => {
     } catch (error) {
       console.log(error);
       notification.error({
-        message: "Error Removing Member.",
+        message: "Error Deleting Member.",
       });
     }
   };
 
-  const handleAddInvites = async (invites) =>  {
+  const handleAddInvites = async (values) =>  {
     try {
-
     setSaving(true);
     const resp = await fetch(
-        `/api/members`,{
+        `/api/event/invites`,{
         method: "POST", 
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ members:invites}),
+        body: JSON.stringify({ ...values, eventId}),
       }).then(res => res.json());  
       setSaving(false);
       setShowInviteModal(false);
-      console.log(resp);
-      setInviteData(resp);
+      const { invites } = values;
+      setInviteData([...inviteData, ...invites]);
    }
     catch(e) {
       console.log(e);
@@ -175,6 +187,7 @@ const InviteParticipants: React.FC<inviteProps> = ({ invites }) => {
         onSubmit={handleSubmit}
         saving={saving}
         setShowInviteModal={setShowInviteModal}
+        invites={inviteData}
       />
       <div>
         <Button
@@ -184,14 +197,14 @@ const InviteParticipants: React.FC<inviteProps> = ({ invites }) => {
           type="primary"
           style={{ marginBottom: "10px" }}
         >
-          Invite Members
+          Add Participants
         </Button>
       </div>
       <Card>
         <List
           itemLayout="horizontal"
           dataSource={inviteData}
-          locale={{ emptyText: "members are not added in this activity" }}
+          locale={{ emptyText: "participants are not added in this activity" }}
           renderItem={(i) => {
             return (
               <List.Item key={i.id}>
@@ -199,9 +212,6 @@ const InviteParticipants: React.FC<inviteProps> = ({ invites }) => {
                   avatar={<Avatar>{i.email.charAt(0).toUpperCase()}</Avatar>}
                   title={i.email}
                 />
-                <Tag color={i.emailVerified ?  "green": "magenta" }>
-                  {i.emailVerified ? "Email Verified" : "Not Verified"}
-                </Tag>
                 <Button danger type="link" onClick={() => removeInvite(i)}>
                   Remove
                 </Button>

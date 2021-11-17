@@ -4,8 +4,8 @@ import { Card, Tabs } from "antd";
 import DeleteEvent from "./DeleteEvent";
 import EventInformationForm from "./EventInformationForm";
 import QuestionFormContainer from "./QuestionFormContainer";
-import get from "lodash/get";
-
+import get from 'lodash/get';
+import map from 'lodash/map';
 import styles from "./EventContainer.module.scss";
 import CopyEventTemplate from "./CopyEvenetTemplate";
 import InviteParticipants from "./InviteParticipants";
@@ -15,6 +15,9 @@ const { TabPane } = Tabs;
 const EventContainer = ({ event, setEventData }) => {
   const id = get(event, "id");
   const isPreview = get(event, "type") === 'template';
+  const invitedUsers = map(get(event,'invites', []), e => {
+    return e.user;
+  });
   return (
     <div className={styles.container}>
       <div style={{ width: "800px" }}>
@@ -40,7 +43,7 @@ const EventContainer = ({ event, setEventData }) => {
         )}
         {!isPreview && <TabPane tab="Participants" key="3">
           <div style={{ width: "800px" }}>
-            <InviteParticipants invites={get(event, "invites", [])} />
+            <InviteParticipants invites={invitedUsers} eventId={get(event,'id')} />
           </div>
         </TabPane>}
       </Tabs>

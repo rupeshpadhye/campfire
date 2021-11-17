@@ -26,12 +26,17 @@ const createMember = async ({members, user}) => {
 
 const findMembers = async (user) => {
   const usrInfo = await prisma.user.findUnique({ where: { email: user.email } });
+  
   const { id } = usrInfo;
-  const members = prisma.members.findMany({
+  let memberCreatedByUser = await prisma.members.findMany({
     where: {
       createdBy: { id },
     },
+    include: {
+      user: true,
+    },
   });
+  const members = memberCreatedByUser.map(m => m.user);
   return members;
 }
 
@@ -47,7 +52,7 @@ export default async function handle(req, res) {
          res.json({ members: createdUsers });
       break;
     case 'GET':
-       const eventUses = findMembers(user);
+       const eventUses = await findMembers(user);
        res.json(eventUses);
 
     default:
