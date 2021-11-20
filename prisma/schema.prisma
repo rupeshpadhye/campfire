@@ -50,6 +50,7 @@ model EventInvite {
   userId   Int
   status  String
   @@index([eventId], name: "eventId")
+  @@unique([userId, eventId], name: "eventInvite")
   @@map(name: "eventInvites")
 }
 

@@ -30,7 +30,7 @@
       line-height: 27px;
       padding: 24px;
       margin: auto;
-      width: 300px;
+      min-width: 300px;
   }
   h3 {
     font-size: 1rem;
@@ -39,7 +39,7 @@
 
   }
   input {
-    width: 300px;
+    min-width: 300px;
     height: 32px;
     border-radius: 5px;
     border: 1px solid #e2e8f0;

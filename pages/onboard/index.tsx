@@ -1,6 +1,7 @@
 import { GetServerSideProps } from 'next';
 import { getSession } from 'next-auth/client';
 import React from 'react';
+import CompleteProfileModal from '../../containers/ProfileContainer/CompleteProfileModal';
 import prisma from '../../lib/prisma';
 
 
@@ -29,41 +30,36 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
                 }});
         } 
 
-        // //TODO if there is no event invite should show register model
-        //  if(!session.user.name) {
-        //         return {
-        //             redirect: {
-        //             destination: '/profile?complete=false',
-        //             permanent: false,
-        //             },
-        //         };
-        // } else {
-        //         return {
-        //                 redirect: {
-        //                 destination: '/',
-        //                 permanent: false,
-        //                 },
-        //             };
-        // } 
-        if(!session.user.name) {
-                    return {
-                        redirect: {
-                        destination: '/profile?complete=false',
-                        permanent: false,
-                        },
-                    };
-        }
+        // TODO if there is no event invite should show register model
+
         return {
             redirect: {
             destination: '/',
             permanent: false,
             },
-        };        
+        };  
+    } else {
+        return {
+            redirect: {
+            destination: '/',
+            permanent: false,
+            },
+        }; 
     }
 }
 
 const OnboardUser = () => { 
-    return <div>Redirecting ...</div>
+    return <CompleteProfileModal/>
 }
 
+
 export default OnboardUser;
+
+
+OnboardUser.defaultProps = {
+    auth: {
+      isPublic: false,
+      redirect: '/',
+      role: ['creator', 'member'],
+    }
+  }

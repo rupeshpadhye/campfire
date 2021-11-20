@@ -12,15 +12,18 @@ import FullScreenLoading from "../../components/FullScreenLoading";
 import { EventProp } from './../../types';
 
 import EventsList from "../../components/Event/EventList";
-import CreateEventCard from "../../components/Event/CreateEventCard";
-import { templates } from "../api/data";
-import CompleteProfileModal from "../../containers/ProfileContainer/CompleteProfileModal";
+import { kycTemplates } from "../api/data";
 
-type EventType =  'celebration';
 
-const eventType: EventType =  'celebration';
+const { Meta } = Card;
 
 export type EventsProps = { events: Array<EventProp>, templateEvents: Array<EventProp> , auth: any };
+
+
+
+type EventType =  'celebration' | 'icebreaker' | 'culture';
+
+const eventTypes: EventType[] = [ 'icebreaker', 'culture'];
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   const session = await getSession({ req });
@@ -35,35 +38,32 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
 
   let events = await prisma.event.findMany({
     where: {
-      author: { email: session.user.email },
-      eventType: eventType
+      author: { email: session.user.email  },
+      eventType: { in: eventTypes}
     },
   });
   events = JSON.parse(safeJsonStringify(events));
-  return { props: { events, templateEvents: templates } };
+  return { props: { events, templateEvents: kycTemplates } };
 };
 
-const Events: React.FC<EventsProps> = (props) => {
+const KnowYourTeam: React.FC<EventsProps> = (props) => {
   const [session, loading] = useSession();
   const { events = [], templateEvents= [] } = props;
   return loading ? (
     <FullScreenLoading />
   ) : (
     <AppLayout>
-      <CompleteProfileModal/>
-      <CreateEventCard session={session}  />
-      <EventsList title='Celebration Templates' desc='Ready to use templates!' isPreview={true} events={templateEvents}/>
-      <EventsList title ={'Events'} desc='' isPreview={false} events={events} />
+      <EventsList title='Know Your Templates' desc='Ready to use templates!' isPreview={true} events={templateEvents}/>
     </AppLayout>
   );
 };
-export default Events;
+export default KnowYourTeam;
 
 
-Events.defaultProps = {
+KnowYourTeam.defaultProps = {
   auth: {
     isPublic: false,
     redirect: '/',
-    role: ['creator', 'member'],
+    role: ['creator','member'],
   }
 };

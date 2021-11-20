@@ -1,4 +1,4 @@
-import AppLayout from "../../components/Layout";
+import AppLayout from "../../components/AppLayout";
 
 const Profile = () => {
   return (
@@ -9,3 +9,11 @@ const Profile = () => {
 };
 
 export default Profile;
+
+Profile.defaultProps = {
+  auth: {
+    isPublic: false,
+    redirect: '/',
+    role: ['creator', 'member'],
+  }
+}

@@ -12,7 +12,13 @@ const createMember = async ({members, user}) => {
   //const createdUsers = await Promise.all(membersData);
   let membersData = members.map(m => {
           return {
-          user:{ create: { email: m, role: 'member' } },
+          user:{ connectOrCreate: { where : {
+            email: m
+          }, 
+          create: {
+            email: m, role: 'member'
+          }
+        } },
           createdBy: { connect: { id: usrInfo.id } },
         }
   }).map(m => prisma.members.create({ data: m }));

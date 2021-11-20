@@ -11,4 +11,21 @@
     line-height: 27px;
     padding: 24px;
 }
+
+
+@mixin primaryButtonSmall
+ {
+    height: 32px;
+    background-color: rgba(102,126,234,1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px;
+    font-weight: bold;
+    color: white;
+    line-height: 27px;
+    padding: 16px;
+}
+    
+
     

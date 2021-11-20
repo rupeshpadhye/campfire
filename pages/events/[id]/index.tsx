@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { GetServerSideProps } from "next";
-import Layout from "../../../components/Layout";
+import Layout from "../../../components/AppLayout";
 import { useSession } from "next-auth/client";
 import safeJsonStringify from 'safe-json-stringify';
 import prisma from "../../../lib/prisma";
@@ -46,7 +46,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
 };
 
 
-const EditEvent: React.FC<{event}> = (props) => {
+const EditEvent: React.FC<{event, auth}> = (props) => {
   const [session, loading] = useSession();
   const [eventData, setEventData] = React.useState(props.event);
   useEffect(() => {
@@ -60,3 +60,12 @@ const EditEvent: React.FC<{event}> = (props) => {
 };
 
 export default EditEvent;
+
+
+EditEvent.defaultProps = {
+  auth: {
+    isPublic: false,
+    redirect: '/',
+    role: ['creator'],
+  }
+}

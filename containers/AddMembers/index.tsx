@@ -12,6 +12,7 @@ import {
 } from "antd";
 import { Router, useRouter } from "next/router";
 import { User } from "../../types";
+import { UserOutlined } from "@ant-design/icons";
 
 type memberProps = {
   members: User[];
@@ -163,7 +164,6 @@ const AddMembers: React.FC<memberProps> = ({ members }) => {
   };
 
   const handleSubmit = (invite) => {
-    console.log(invite);
     handleAddInvites(invite);
   };
 
@@ -199,7 +199,7 @@ const AddMembers: React.FC<memberProps> = ({ members }) => {
             return (
               <List.Item key={i.id}>
                 <List.Item.Meta
-                  avatar={<Avatar>{i.email.charAt(0).toUpperCase()}</Avatar>}
+                  avatar={<Avatar src={i.image} icon={<UserOutlined/>} />}
                   title={i.email}
                 />
                 <Tag color={i.emailVerified ?  "green": "magenta" }>

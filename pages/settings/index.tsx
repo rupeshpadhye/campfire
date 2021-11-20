@@ -1,4 +1,4 @@
-import AppLayout from "../../components/Layout";
+import AppLayout from "../../components/AppLayout";
 import { Tabs } from "antd";
 import AddMembers from "../../containers/AddMembers";
 import prisma from "../../lib/prisma";
@@ -74,3 +74,11 @@ const Settings = ({ members }) => {
 };
 
 export default Settings;
+
+Settings.defaultProps = {
+  auth: {
+    isPublic: true,
+    redirect: '/',
+    role: ['creator'],
+  }
+ }

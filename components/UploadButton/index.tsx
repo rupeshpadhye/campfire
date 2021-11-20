@@ -1,14 +1,16 @@
 import React from 'react';
 import { PickerOverlay } from "filestack-react";
 import { Button, Image } from 'antd';
+import { PlusOutlined } from '@ant-design/icons';
 
 
+//const API_KEY = process.env.NEXT_PUBLIC_FILESTACK_API_KEY;
 const API_KEY = "AGjVx6ZZnSZOKdCmH1npDz";
 
 const UploadButton = (props) => {
     const [showFileUploadOverlay, setShowFileUploadOverlay] =
       React.useState(false);
-    const { handleUpload, label, fileURL, removeFile } = props;
+    const { handleUpload, label ='Upload', fileURL, removeFile, type='default' } = props;
     return (
       <div>
         {showFileUploadOverlay ? (
@@ -22,11 +24,13 @@ const UploadButton = (props) => {
         ) : null}
         <div>
          {fileURL && <Image src={fileURL} alt="uploaded" width='100px' height={100}/>}
-          <Button type='text' danger onClick={() => removeFile()}> Click To Remove File </Button>
+         { fileURL && <Button type='text' danger onClick={() => removeFile()}> Click To Remove File </Button> }
         </div>
-        <Button type="default" onClick={() => setShowFileUploadOverlay(true)}>
+        <Button type={type} onClick={() => setShowFileUploadOverlay(true)} icon={<PlusOutlined/>}>
           {label}
         </Button>
+        <div>
+    </div>
       </div>
     );
   };

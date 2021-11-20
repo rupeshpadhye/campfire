@@ -16,6 +16,7 @@ import { Router, useRouter } from "next/router";
 import { User } from "../../../types";
 
 import differenceBy from 'lodash/differenceBy';
+import { SplitCellsOutlined, UserOutlined,SyncOutlined } from "@ant-design/icons";
 const { Option } = Select;
 
 type inviteProps = {
@@ -50,6 +51,7 @@ const InviteForm = ({
   const [ members, setMembers ] = useState([]);
   const [ loading , setLoading ] = useState(false);
   const [ error, setError ] = useState(null);
+  const [refreshData, setRefreshData] = useState(false);
   const fetchMembers = async () => {
     try {
       setLoading(true);
@@ -59,6 +61,8 @@ const InviteForm = ({
       if(inviteMembers.length){
         setMembers(inviteMembers);
         setLoading(false);
+        setRefreshData(false);
+
       } else {
         setError('All members are invited.')
       }
@@ -74,7 +78,16 @@ const InviteForm = ({
      fetchMembers();
    }
   
- }, [setShowInviteModal])
+ }, [setShowInviteModal]);
+
+ useEffect(() => {
+  if(refreshData && members.length === 0) {
+    fetchMembers();
+  }
+ 
+}, [refreshData]);
+
+
 
   const handleSubmit = () => {
     form.validateFields().then((values) => {
@@ -87,7 +100,7 @@ const InviteForm = ({
   return (
     <Modal
       visible={showInviteModal}
-      title="Invite Members"
+      title="Add Participants"
       footer={
         <div>
           <Button 
@@ -102,7 +115,14 @@ const InviteForm = ({
       }
       onCancel={() => setShowInviteModal(false)}
     >
-      { error && <Alert type="info" showIcon message={error} style={{ marginBottom: '16px'}} /> }
+      { error && <Alert type="info" showIcon message={error} description={
+        <div>
+          Click on the  <SyncOutlined /> icon to refresh the list.
+          <Button onClick={()=> {
+        setRefreshData(true);
+        }} icon={<SyncOutlined/>}></Button>
+        </div>
+      } style={{ marginBottom: '16px'}} /> }
       { loading && !error ? <Spin/> :<Form layout="vertical" form={form} >
       <Form.Item name="invites" label="Add Team Member" rules={[{ required: true }]}>
           <Select
@@ -113,7 +133,7 @@ const InviteForm = ({
           >
            { members.map((member) => (<Option key={member.id} value={member.id}>
              <div>
-                <Avatar src={member.avatar}/>
+                <Avatar src={member.image}/>
                 <span style={{ marginLeft: "10px" }}>{member.name || member.email}</span>    
              </div>
             </Option>))}
@@ -133,14 +153,16 @@ const InviteParticipants: React.FC<inviteProps> = ({ invites, eventId }) => {
   const handleRemoveInvite = async (invite) => {
     const { id } = invite;
     try {
-      await fetch(`/api/members/${id}`, {
+      await fetch(`/api/event/invites`, {
         method: "DELETE",
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId: id, eventId }),
       }).then((res) => res.json());
       notification.info({
-        message: "Members Removed From The Platform",
+        message: "Participant Removed",
       });
       setInviteData(inviteData.filter((i) => i.id !== id));
-    
+
     } catch (error) {
       console.log(error);
       notification.error({
@@ -152,7 +174,7 @@ const InviteParticipants: React.FC<inviteProps> = ({ invites, eventId }) => {
   const handleAddInvites = async (values) =>  {
     try {
     setSaving(true);
-    const resp = await fetch(
+    const { invites } = await fetch(
         `/api/event/invites`,{
         method: "POST", 
         headers: { 'Content-Type': 'application/json' },
@@ -160,7 +182,6 @@ const InviteParticipants: React.FC<inviteProps> = ({ invites, eventId }) => {
       }).then(res => res.json());  
       setSaving(false);
       setShowInviteModal(false);
-      const { invites } = values;
       setInviteData([...inviteData, ...invites]);
    }
     catch(e) {
@@ -176,7 +197,6 @@ const InviteParticipants: React.FC<inviteProps> = ({ invites, eventId }) => {
   };
 
   const handleSubmit = (invite) => {
-    console.log(invite);
     handleAddInvites(invite);
   };
 
@@ -209,7 +229,7 @@ const InviteParticipants: React.FC<inviteProps> = ({ invites, eventId }) => {
             return (
               <List.Item key={i.id}>
                 <List.Item.Meta
-                  avatar={<Avatar>{i.email.charAt(0).toUpperCase()}</Avatar>}
+                  avatar={<Avatar src={i.image} icon={<UserOutlined/>} ></Avatar>}
                   title={i.email}
                 />
                 <Button danger type="link" onClick={() => removeInvite(i)}>

@@ -9,50 +9,60 @@ import { Button, Layout, Menu} from 'antd';
 const {Header,Content, Sider, Footer } = Layout;
 import get from 'lodash/get';
 import flatten from 'lodash/flatten';
-import styles from './Layout.module.scss';
+import styles from './AppLayout.module.scss';
 import Logo from "../Logo";
 import {
   BarChartOutlined,
   UserOutlined,
   VideoCameraOutlined,
   BankOutlined,
-  SettingOutlined
+  SettingOutlined,
+  TeamOutlined
 } from '@ant-design/icons';
 type Props = {
   children: ReactNode;
 };
 
-const creatorMenu = [
+export const menuItems = [
   { id: '1',
     title: 'Team Activities',
     icon: <VideoCameraOutlined />,
     link: '/events',
-    subMenu: []
+    subMenu: [],
+    role: ['creator','member'],
   },
   {
     id: '2',
+    title: 'Know Your Team',
+    icon: <TeamOutlined />,
+    link: '/kyt',
+    role: ['member', 'creator'],
+  },
+  {
+    id: '9',
     title: 'Setting',
     icon: <SettingOutlined />,
     link: '/settings', 
     subMenu: [
       {
-      id: '2.1',
+      id: '9.1',
       title: 'Members',
       link: '/settings/members',
     },
     {
-      id: '2.2',
+      id: '9.2',
       title: 'Subscription',
       link: '/settings/subscription',
-    }]
+    }],
+    role: ['creator'],
   },
-  { id: '3',
+  { id: '10',
     title: 'Profile',
     icon: <UserOutlined />,
     link: '/profile',
-    subMenu: []
-  },
-
+    subMenu: [],
+    role: ['creator', 'member'],
+  }
 ]
 
 
@@ -62,14 +72,13 @@ const AppLayout: React.FC<Props> = (props) => {
   const [ key, setKey ] = useState('1');
   const handleMenuClick = ({item, key}) => {
     setKey(key);
-    const menu = creatorMenu.find(item => item.id === key);
+    const menu = menuItems.find(item => item.id === key);
     router.push(menu.link);
   }
 
   useEffect(() => {
-    console.log(router.pathname);
-    const menuItems = flatten(creatorMenu);
-    const menu = menuItems.find(item => router.pathname.includes(item.link));
+    const items = flatten(menuItems);
+    const menu = items.find(item => router.pathname.includes(item.link));
     if(menu) {
       setKey(menu.id);
     }
@@ -77,24 +86,20 @@ const AppLayout: React.FC<Props> = (props) => {
 
   const getSider = () => {
     const role = get(session, "user.role");
-    if(role === 'creator') {
-      return  ( 
+    const menu = menuItems.filter(item => item.role.includes(role));
+   return  ( 
       <Sider className={styles.layoutSider}>
           <Menu  mode="inline" selectedKeys={[key]} onClick={handleMenuClick}>
-            {creatorMenu.map(item => (
+            {menu.map(item => (
               <Menu.Item key={item.id} icon={item.icon}>
                 {item.title}
                 </Menu.Item>
             ))}
         </Menu>
     </Sider>
-      )
-    }
-    return null;
+    )
   }
-  if(!session && !loading) { 
-    router.push('/');
-  }
+
   const handleSignOut = async () => { 
     await signOut();
     router.push('/');

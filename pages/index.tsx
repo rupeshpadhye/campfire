@@ -9,30 +9,31 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   
   if(session && session.user) {
     const role = get(session, 'user.role');
-  if(role === 'member') {
-    return {
-      redirect: {
-        destination: '/home',
-        permanent: false,
-      },
-    }
-  } else if(role === 'creator') {
+  if(role) {
     return {
       redirect: {
         destination: '/events',
         permanent: true,
       },
-    }
+      }
     } 
   }
 
   return {
-    props: {},
+    props: { },
   }
 }
 
-const IndexPage: React.FC<{}> = (Props) => {
+const IndexPage: React.FC<{auth}> = (Props) => {
   return <LandingPage/>
 }
+
+IndexPage.defaultProps = {
+  auth: {
+    isPublic: true,
+    redirect: '/',
+    role: ['member', 'creator'],
+  }
+};
 
 export default IndexPage

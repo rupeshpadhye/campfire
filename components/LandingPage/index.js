@@ -9,6 +9,7 @@ import RegisterCreator from "../../containers/RegisterCreator";
 import Plans from "../Plans";
 import Features from "./Features";
 import Footer from "./Footer";
+import Router  from "next/router";
 
 const defaultOptions = {
   loop: true,
@@ -20,6 +21,11 @@ const defaultOptions = {
 };
 
 export const Header = ({ hideSignInBtn }) => {
+  const handleSignIn = () => {
+    //window.location.href = "/signin";
+    Router.push("/signin");
+  };
+
   return (
     <Row
     className={styles.header}
@@ -36,9 +42,7 @@ export const Header = ({ hideSignInBtn }) => {
       hideSignInBtn ?<Link href="/">
           <Button className={styles.signInButton}>Home</Button>
     </Link> : 
-  <Link href="/signin">
-        <Button className={styles.signInButton}>Sign In</Button>
-      </Link> 
+        <Button className={styles.signInButton} onClick={handleSignIn}>Sign In</Button>
     }
     </Col>
   </Row>

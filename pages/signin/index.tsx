@@ -145,3 +145,11 @@ const providersToRender =  Object.values(providers).filter((provider: Provider) 
 
 export default signin;
 
+
+signin.defaultProps = {
+  auth: {
+    isPublic: true,
+    redirect: '/',
+    role: ['member', 'creator'],
+  }
+};

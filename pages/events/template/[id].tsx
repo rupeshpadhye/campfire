@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { GetServerSideProps } from "next";
-import Layout from "../../../components/Layout";
+import Layout from "../../../components/AppLayout";
 import styles from './../events.module.scss';
 import { Card, notification, Tabs } from "antd";
 
@@ -22,7 +22,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
 
 const { TabPane } = Tabs;
 
-const PreviewTemplate: React.FC<{event}> = (props) => {
+const PreviewTemplate: React.FC<{event, auth}> = (props) => {
  
   const [eventData, setEventData] = React.useState(props.event);
 
@@ -34,3 +34,12 @@ const PreviewTemplate: React.FC<{event}> = (props) => {
 };
 
 export default PreviewTemplate;
+
+
+PreviewTemplate.defaultProps = {
+  auth: {
+    isPublic: false,
+    redirect: '/',
+    role: ['creator'],
+  }
+};

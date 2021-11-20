@@ -18,3 +18,12 @@ export default function verifyRequest ({ baseUrl }) {
       </div>
     )
   }
+
+//TODO can be checked token in future
+verifyRequest.defaultProps = {
+    auth: {
+      isPublic: true,
+      redirect: '/',
+      role: ['creator', 'member'],
+    }
+   }

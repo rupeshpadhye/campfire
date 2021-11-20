@@ -8,11 +8,16 @@ const saveEventInvites = async ({ eventId, invites }) => {
             eventId: eventId,
             userId: id,
             status: 'pending'
-       }
+       },
+       include: {
+          user: true,
+        },
      });
    });
    const result = await Promise.all(invitedMembers);
-    return result;
+   //@ts-ignore
+   const eventInvites = result.map(r => r.user); 
+   return eventInvites;
   }
   
   const findEventInvites = async (eventId) => {
@@ -34,13 +39,17 @@ const saveEventInvites = async ({ eventId, invites }) => {
       });
   }
 
-export default async function handle(req, res) {
-    const { invites, eventId } = req.body;
-    console.log(eventId, invites);
+async function removeParticipant({ userId, eventId } ) { 
+    const result =    await prisma.eventInvite.delete({
+           where: { 
+               eventInvite: { userId , eventId }
+           }});
+       return result;
+   }
+   
 
-    const session = await getSession({ req });
-    const { user } = session;
-  
+export default async function handle(req, res) {
+    const { invites, eventId, userId } = req.body;
     switch (req.method) {
       case 'POST':
          const createdUsers =  await saveEventInvites({ eventId , invites});
@@ -49,7 +58,9 @@ export default async function handle(req, res) {
       case 'GET':
          const eventUses = await findEventInvites(eventId);
          res.json(eventUses);
-  
+      case 'DELETE':
+          const result = await removeParticipant({ userId, eventId });
+          res.json({ result });
       default:
           return res.status(405).end(`Method ${req.method} Not Allowed`)
       }
