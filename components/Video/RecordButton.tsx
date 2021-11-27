@@ -5,10 +5,10 @@ import { useEffect, useState } from "react";
 import { Button } from "antd";
 
 const API_KEY = "fd569f9e-7930-4f73-9a73-e96457045648";
-const BUTTON_ID = "loom-sdk-button";
+//const BUTTON_ID = "loom-sdk-button";
 
-export default function LoomRecordButton({ btnLabel, onInsertClicked}) {
-
+export default function LoomRecordButton({ btnLabel, onInsertClicked, type, icon }) {
+  const [buttonId, setButtonId] = useState(`loom-record-button-${Date.now()}`);
   useEffect(() => {
     async function setupLoom() {
       const { supported, error } = await isSupported();
@@ -18,7 +18,7 @@ export default function LoomRecordButton({ btnLabel, onInsertClicked}) {
         return;
       }
 
-      const button = document.getElementById(BUTTON_ID);
+      const button = document.getElementById(buttonId);
 
       if (!button) {
         return;
@@ -41,7 +41,7 @@ export default function LoomRecordButton({ btnLabel, onInsertClicked}) {
 
   return (
     <>
-      <Button id={BUTTON_ID}>{btnLabel}</Button>
+      <Button id={buttonId} type={type || 'default'} icon={icon}>{btnLabel}</Button>
     </>
   );
 }

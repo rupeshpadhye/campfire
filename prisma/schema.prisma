@@ -25,7 +25,6 @@ model Event {
   uniqueLink String?
   expiresAt DateTime?
   questions Question[]
-  userResponses UserQuestionAnswers[]
   eventType EventType
   invites EventInvite[]
 }
@@ -57,17 +56,14 @@ model EventInvite {
 
 model UserQuestionAnswers {
   id        Int     @default(autoincrement()) @id
-  event    Event   @relation(fields: [eventId], references: [id])
-  eventId  Int
   user    User   @relation(fields: [userId], references: [id])
   userId  Int
   question    Question   @relation(fields: [questionId], references: [id])
   questionId  Int
-  videoResponseLink    String
+  videoData Json?
   @@index([userId], name: "userId")
-  @@index([eventId], name: "eventId")
+  @@unique([userId, questionId], name: "userAnswer")
   @@map(name: "user_question_answers")
-
 }
 
 

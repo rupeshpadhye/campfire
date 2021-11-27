@@ -1,19 +1,20 @@
 import { ArrowLeftOutlined, BackwardOutlined } from "@ant-design/icons";
-import React from "react";
+import React, { useEffect } from "react";
 import Router from "next/router";
 import { GetServerSideProps } from "next";
 import { getSession, useSession } from "next-auth/client";
 import safeJsonStringify from "safe-json-stringify";
 import prisma from "../../../lib/prisma";
 
-import { Button, Card, Layout, PageHeader, Tabs } from "antd";
+import { Button, Card, Layout, notification, PageHeader, Tabs } from "antd";
 import { Carousel } from 'antd';
-import { QuestionCard } from "../../../components/QuestionCards";
+import QuestionAnswerCard  from "../../../components/QuestionCards/QuestionAnswerCard";
 import get from 'lodash/get';
 const { Header, Content } = Layout;
 
 import styles from "./event.module.scss";
 import { EventInformation } from ".";
+import AnswerContainer from "../../../containers/EventContainer/AnswerContainer";
 
 const { TabPane } = Tabs;
 export const getServerSideProps: GetServerSideProps = async ({
@@ -22,6 +23,11 @@ export const getServerSideProps: GetServerSideProps = async ({
   params,
 }) => {
   const session = await getSession({ req });
+  if(!session) {
+    return {
+      props: { redirect: "/" },
+    };
+  }
   const { user } = session;
 
   let [event, userAnswers] = await Promise.all([
@@ -45,10 +51,11 @@ export const getServerSideProps: GetServerSideProps = async ({
             email: user.email,
           },
         },
-        eventId: Number(params?.id) || -1,
-      },
-      include: {
-        question: true,
+        question: { 
+          is: {
+            eventId: Number(params?.id) || -1,
+          }
+        }
       },
     }),
   ]);
@@ -64,23 +71,8 @@ export const getServerSideProps: GetServerSideProps = async ({
 
 const Participate = ({ event, userAnswers }) => {
   const questions = get(event, "questions", []);
-  
-  const handleParticipate = () => {
-
-  }
   return (
     <Layout className={styles.participatePage}>
-      {/* <Header theme>      
-        <Button
-        onClick={() => Router.back()}
-        className={styles.backButton}
-        size="large"
-        shape="circle"
-        icon={<ArrowLeftOutlined />}
-      ></Button>
-     
-
-</Header> */}
     <PageHeader
           className={styles.pageHeader}
           onBack={() => Router.back()}
@@ -88,15 +80,13 @@ const Participate = ({ event, userAnswers }) => {
           subTitle=""
        />
 
-      <Content>
+      <Content   className={styles.participatePageContent}>
           <Tabs defaultActiveKey="1">
           <TabPane tab="Tasks" key="1">
             <div className={styles.participateCarousel}>
-              <Carousel swipeToSlide draggable>
-                {questions.map((question, index) => {
-                  return ( <QuestionCard index={index} question={question}  key={index} hideActionButton={true}/>)
-                })}
-              </Carousel>  
+              {/* <Carousel swipeToSlide draggable> */}
+                <AnswerContainer questions={questions} userAnswers={userAnswers} />
+              {/* </Carousel>   */}
               </div>
         </TabPane>
         <TabPane tab="Details" key="2">

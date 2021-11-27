@@ -1,0 +1,33 @@
+.questionCards {
+    margin-bottom: 16px;
+    :global .ant-card-head {
+        border-bottom: none;
+    }
+    :global .ant-card-body {
+        padding-top: 0;
+    }
+    :global .ant-card-actions > li {
+       text-align: right;
+       padding: 8px;
+    }
+}
+
+
+
+.answerHolder {
+    position: relative;
+    margin-top: 8px;
+}
+
+.answerHeader {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.answerLabels {
+    font-weight: 600;
+    color: gray;
+}

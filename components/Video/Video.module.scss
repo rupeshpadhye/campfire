@@ -2,4 +2,7 @@
     display: grid;
     justify-content: center;
     margin: 16px 0px;
+    :global .embed-top-bar_embedTopSection_3VD {
+        display: none;
+    }
 }

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Card, Modal, Tabs } from "antd";
 import { Form, Button, Input } from "antd";
-
 import styles from "./QuestionCards.module.scss";
 import {
   DeleteOutlined,
@@ -15,6 +14,7 @@ type Props = {
   handleEdit?: (any) => void;
   handleDelete?: (any) => void;
   hideActionButton?: boolean;
+  handleAnswer?: (any) => void;
 };
 
 type QuestionProps = {
@@ -23,13 +23,15 @@ type QuestionProps = {
   handleDelete?: (any) => void;
   hideActionButton?: boolean;
   index: number;
+  handleAnswer?: (question: any, answer: any) => void;
 };
+
+
 
 export const QuestionCard = ({
   question,
   handleEdit,
   handleDelete,
-  hideActionButton,
   index,
 }: QuestionProps) => {
   const [showDescQuestionId, setShowDescQuestionId] = useState(null);
@@ -48,11 +50,6 @@ export const QuestionCard = ({
       }
       key={index}
       actions={[
-        hideActionButton ? (
-          <Button type="primary" icon={<VideoCameraFilled />}>
-            Answer
-          </Button>
-        ) : (
           <div>
             <Button
               danger
@@ -73,7 +70,6 @@ export const QuestionCard = ({
               Delete
             </Button>
           </div>
-        ),
       ]}
       extra={
         <div>
@@ -111,6 +107,7 @@ const QuestionCards: React.FC<Props> = ({
   handleEdit,
   handleDelete,
   hideActionButton,
+  handleAnswer,
 }) => {
   return questions.map((question, index) => {
     return (
@@ -120,6 +117,7 @@ const QuestionCards: React.FC<Props> = ({
         handleEdit={handleEdit}
         handleDelete={handleDelete}
         hideActionButton={hideActionButton}
+        handleAnswer={handleAnswer}
       />
     );
   });

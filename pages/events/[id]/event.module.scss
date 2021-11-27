@@ -1,13 +1,29 @@
 .participatePage {
-    padding: 0;
     margin: 0;
     width: 100vw;
     min-height: 100vh;
     //background: linear-gradient(135deg, rgb(122, 101, 230) 0%, rgb(248, 187, 206) 100%);
+
+    :global .ant-tabs {
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+    }  
+    :global .ant-tabs-nav {
+      padding: 16px;
+    } 
+    :global .ant-tabs-content-holder {
+      width: 100vw;
+      margin: auto; 
+      margin-bottom: 16px; 
+    }
 }
 .pageHeader {
       background: linear-gradient(135deg, rgb(122, 101, 230) 0%, rgb(248, 187, 206) 100%);
       color: white;
+      position: fixed;
+      width: 100%;
+      z-index: 1;
       :global .ant-page-header-back-button{
         color: white;
       }
@@ -15,15 +31,10 @@
         color: white;
 
       }
-  :global .ant-tabs {
-    border-bottom: none;
-    width: 95vw;
-    &-nav-wrap {
-      display: flex;
-    justify-content: flex-end;
-    height: 64px;
-    }
-  }    
+  
+}
+.participatePageContent {
+  margin-top: 64px;
 }
 .backButton {
     position:fixed;
@@ -35,9 +46,27 @@
   margin: auto;
 
   padding: 24px;
+  :global .ant-card {     
+    border-radius: 24px;
+    padding-left: 24px;
+    padding-right: 24px;
+
+    &-actions {
+      border-top: none;
+    }
+ }
+
   :global .ant-carousel .slick-dots {
     position: relative;
     bottom: -40px;
+    li {
+      height: 8px;
+      button {
+        background: linear-gradient(135deg, rgb(122, 101, 230) 0%, rgb(248, 187, 206) 100%);
+        height: 12px;
+      }
+    }
+
   }
 }
 .header {

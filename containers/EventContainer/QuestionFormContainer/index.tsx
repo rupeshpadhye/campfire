@@ -10,6 +10,7 @@ import get from 'lodash/get';
 import sum from 'lodash/sum';
 import ClapEmoji from "../../../components/ClapEmoji";
 import RichEditor from "../../../components/RichEditor";
+import { VideoCameraAddOutlined } from "@ant-design/icons";
 
 const QuestionForm = (props) => {
   const [form] = Form.useForm();
@@ -59,7 +60,7 @@ const QuestionForm = (props) => {
           name="desc"
           label="You can add more description by recording a video."
         >
-          <LoomRecordButton btnLabel='Record' onInsertClicked={handleInsertClicked}/>
+          <LoomRecordButton type='default' icon={<VideoCameraAddOutlined/>} btnLabel='Record' onInsertClicked={handleInsertClicked}/>
           <VideoPreview videoData={videoData || (question && question.videoData)}/>
         </Form.Item>
         <Form.Item
