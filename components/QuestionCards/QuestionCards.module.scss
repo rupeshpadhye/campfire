@@ -3,6 +3,13 @@
     flex-direction: row;
     justify-content: space-between;
 }
-.gutter {
+.questionCards {
     margin-bottom: 16px;
+    :global .ant-card-head {
+        border-bottom: none;
+    }
+    :global .ant-card-actions > li {
+       text-align: right;
+       padding: 8px;
+    }
 }

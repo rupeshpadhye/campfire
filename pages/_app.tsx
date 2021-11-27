@@ -40,9 +40,9 @@ function Auth({ children , auth}) {
   const allowedRoles = get(auth, 'role',[]);
   useEffect(() => {
     if (loading) return 
-    // if (!isUser) {
-    //   Router.push('/');
-    // } 
+    if (!isUser) {
+      Router.push('/');
+    } 
   }, [isUser, loading])
   if (isUser ) {
     if(allowedRoles.includes(role)) {

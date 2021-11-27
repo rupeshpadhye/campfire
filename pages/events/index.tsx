@@ -9,61 +9,107 @@ import prisma from "../../lib/prisma";
 
 import FullScreenLoading from "../../components/FullScreenLoading";
 
-import { EventProp } from './../../types';
+import { EventProp } from "./../../types";
 
 import EventsList from "../../components/Event/EventList";
 import CreateEventCard from "../../components/Event/CreateEventCard";
 import { templates } from "../api/data";
 import CompleteProfileModal from "../../containers/ProfileContainer/CompleteProfileModal";
 
-type EventType =  'celebration';
+import get from "lodash/get";
+import MemberView from "../../components/Event/MemberView";
 
-const eventType: EventType =  'celebration';
+type EventType = "celebration";
 
-export type EventsProps = { events: Array<EventProp>, templateEvents: Array<EventProp> , auth: any };
 
-export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
-  const session = await getSession({ req });
-  if(!session) {
-    return {
-      redirect: {
-        destination: '/',
-        permanent: true,
-      },
-    }
-  }
-
-  let events = await prisma.event.findMany({
-    where: {
-      author: { email: session.user.email },
-      eventType: eventType
-    },
-  });
-  events = JSON.parse(safeJsonStringify(events));
-  return { props: { events, templateEvents: templates } };
+export type EventsProps = {
+  events?: Array<EventProp>;
+  templateEvents?: Array<EventProp>;
+  auth: any;
+  invitedEvents?: Array<EventProp>;
+  userRole: string;
 };
 
+const eventType: EventType = "celebration";
+
+export const getServerSideProps: GetServerSideProps = async ({ req, res, }) => {
+
+  const session = await getSession({ req });
+  const userRole = get(session, "user.role");
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: true,
+      },
+    };
+  }
+  let events = [];
+  if (userRole === "creator") {
+    let events = await prisma.event.findMany({
+      where: {
+        author: { email: session.user.email },
+        eventType: eventType,
+        //published: true,
+      },
+      include: {
+        author: true,
+      },
+    });
+    events = JSON.parse(safeJsonStringify(events));
+    console.log('evetns',events)
+    return { props: { events, templateEvents: templates } };
+  } else {
+    const invitedEvents = await prisma.eventInvite.findMany({
+      where: {
+        user: { email: session.user.email },
+        event: { is: { eventType: eventType } },
+      },
+      include: {
+        event: true,
+      },
+    });
+    events = invitedEvents.map((invitedEvent) => invitedEvent.event);
+    return { props: { invitedEvents: events } };
+  }
+};
+
+const CreatorView = ({ events, templateEvents }) => {
+  return (
+    <>
+      <CreateEventCard />
+      <EventsList
+        title="Celebration Templates"
+        desc="Ready to use templates!"
+        isPreview={true}
+        events={templateEvents}
+      />
+      <EventsList title={"Events"} desc="" isPreview={false} events={events} />
+    </>
+  );
+};
+
+
+
 const Events: React.FC<EventsProps> = (props) => {
-  const [session, loading] = useSession();
-  const { events = [], templateEvents= [] } = props;
-  return loading ? (
-    <FullScreenLoading />
-  ) : (
+  const { events = [], templateEvents = [], invitedEvents } = props;
+  return (
     <AppLayout>
-      <CompleteProfileModal/>
-      <CreateEventCard session={session}  />
-      <EventsList title='Celebration Templates' desc='Ready to use templates!' isPreview={true} events={templateEvents}/>
-      <EventsList title ={'Events'} desc='' isPreview={false} events={events} />
+      <CompleteProfileModal />
+      {events.length ? (
+        <CreatorView events={events} templateEvents={templateEvents} />
+      ) : <MemberView events={invitedEvents} />
+      }
     </AppLayout>
   );
 };
 export default Events;
 
-
 Events.defaultProps = {
   auth: {
     isPublic: false,
-    redirect: '/',
-    role: ['creator', 'member'],
-  }
+    redirect: "/",
+    role: ["creator", "member"],
+  },
 };

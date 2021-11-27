@@ -16,7 +16,7 @@ generator client {
 model Event {
   id        Int     @default(autoincrement()) @id
   title     String
-  content   String?
+  content   String? @db.LongText
   published Boolean @default(false)
   author    User?   @relation(fields: [authorId], references: [id])
   authorId  Int?
@@ -35,9 +35,10 @@ model Question {
     event    Event   @relation(fields: [eventId], references: [id])
     eventId  Int
     title     String
-    desc   String?
+    desc   String? @db.Text
     videoData Json?
     userResponses UserQuestionAnswers[]
+    claps  Int @default(5)
     @@index([eventId], name: "eventId")
     @@map(name: "questions")
 }

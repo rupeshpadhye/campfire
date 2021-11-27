@@ -1,8 +1,11 @@
+import { getSession } from "next-auth/client";
 import prisma from "../../../../lib/prisma";
 
 export default async function handle(req, res) {
   const eventId = parseInt(req.query.eventId);
-  const { event } = req.body;
+  const  event  = req.body;
+  const session = await getSession({ req });
+  console.log(event, eventId);
   switch (req.method) {
     case 'GET':
         return getEventById();

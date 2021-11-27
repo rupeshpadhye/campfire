@@ -3,6 +3,7 @@ import { Card, Modal, notification, Tabs } from "antd";
 import { Form, Button, Input } from "antd";
 import Router from "next/router";
 import UploadButton from "../../../components/UploadButton";
+import RichEditor from "../../../components/RichEditor";
 
 
 const EventInformationForm = ({ event, isPreview }) => {
@@ -18,6 +19,7 @@ const EventInformationForm = ({ event, isPreview }) => {
     const handSaveEventInfo = async (event) => { 
         const { id } = event;
         setSaving(true);
+      try {
        const response = await fetch(
           id ? `/api/event/${id}`: `/api/event`, {
           method: id ? "PUT" : "POST",
@@ -32,20 +34,28 @@ const EventInformationForm = ({ event, isPreview }) => {
           Router.push(`/events/${response.id}`);
         } else {
           notification.success({ message: 'Event Info Updated.'});
+        } }
+        catch(err) {
+          console.error(err);
+        } finally {
+          setSaving(false);
         }
-        setSaving(false);
       }
   
     const handleFinish =(values) => {
       const newEvent = {...values, headerImage, id: event.id};
-      handSaveEventInfo(newEvent);
+      form.validateFields().then(() => {
+        handSaveEventInfo(newEvent);
+      }).catch(errorInfo => {
+        console.log('Validate Failed:', errorInfo);
+      });
     };
   
     const handleHeaderImage = (res) => {
       const { url } = res.filesUploaded[0];
       setHeaderImage(url);
     };
-  
+
     return (
       <div>
         <Form
@@ -74,7 +84,8 @@ const EventInformationForm = ({ event, isPreview }) => {
               { required: true, message: "Please input event description" },
             ]}
           >
-            <Input.TextArea showCount maxLength={100} />
+            {/* <Input.TextArea showCount maxLength={100} /> */}
+            <RichEditor/>
           </Form.Item>
           <Form.Item name="headerImage" label="Header Image ">
 

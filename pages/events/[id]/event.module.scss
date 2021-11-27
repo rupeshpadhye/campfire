@@ -1,0 +1,65 @@
+.participatePage {
+    padding: 0;
+    margin: 0;
+    width: 100vw;
+    min-height: 100vh;
+    //background: linear-gradient(135deg, rgb(122, 101, 230) 0%, rgb(248, 187, 206) 100%);
+}
+.pageHeader {
+      background: linear-gradient(135deg, rgb(122, 101, 230) 0%, rgb(248, 187, 206) 100%);
+      color: white;
+      :global .ant-page-header-back-button{
+        color: white;
+      }
+      :global .ant-page-header-heading-title {
+        color: white;
+
+      }
+  :global .ant-tabs {
+    border-bottom: none;
+    width: 95vw;
+    &-nav-wrap {
+      display: flex;
+    justify-content: flex-end;
+    height: 64px;
+    }
+  }    
+}
+.backButton {
+    position:fixed;
+    top: 16px;
+    left: 16px;
+}
+.participateCarousel {
+  width: 800px;
+  margin: auto;
+
+  padding: 24px;
+  :global .ant-carousel .slick-dots {
+    position: relative;
+    bottom: -40px;
+  }
+}
+.header {
+  position: fixed;
+  width: 100%;
+  h1 {
+    font-size: 48px;
+    font-weight: bold;
+    margin: 0;
+  }
+  z-index: 1;
+}
+
+.eventInformation {
+  width: 600px;
+}
+
+.eventInformation {
+  width: 600px;
+}
+
+.eventInfo {
+  width: 600px;
+  margin: auto;
+}

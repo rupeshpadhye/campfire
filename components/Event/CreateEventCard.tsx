@@ -5,13 +5,14 @@ import { Session } from "next-auth";
 
 import CreateEvent from "./../../public/create_event.svg";
 import styles from './Event.module.scss';
+import { useSession } from "next-auth/client";
 
 
 type CreateEventCardProps = {
-    session: Session;
   };
   
-const CreateEventCard: React.FC<CreateEventCardProps> = ({ session }) => {
+const CreateEventCard: React.FC<CreateEventCardProps> = ({  }) => {
+  const [session, loading] = useSession();
     return (
       <div className={styles.createEventCard}>
         <div>

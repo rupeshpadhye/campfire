@@ -21,6 +21,7 @@ import {
 } from '@ant-design/icons';
 type Props = {
   children: ReactNode;
+  hideSider?: boolean;
 };
 
 export const menuItems = [
@@ -68,6 +69,7 @@ export const menuItems = [
 
 const AppLayout: React.FC<Props> = (props) => {
   const router = useRouter();
+  const { hideSider } = props;
   const [session, loading] = useSession();
   const [ key, setKey ] = useState('1');
   const handleMenuClick = ({item, key}) => {
@@ -119,7 +121,7 @@ const AppLayout: React.FC<Props> = (props) => {
       </div>
       </Header>
     <Layout className={styles.layoutInnerContainer}>
-      {getSider()}
+      {hideSider ? null : getSider()}
     <Content className={styles.layoutContent}>
       {props.children}
       <Footer></Footer>

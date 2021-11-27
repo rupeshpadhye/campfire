@@ -1,25 +1,34 @@
 import React, { useEffect, useState } from "react";
 import { Card, Modal, notification, Tabs } from "antd";
-import { Form, Button, Input } from "antd";
+import { Form, Button, Input, InputNumber } from "antd";
 
 import QuestionCards from "../../../components/QuestionCards";
 import LoomRecordButton from "../../../components/Video/RecordButton";
 import VideoPreview from "../../../components/Video/VideoPreview";
+import isEmpty from 'lodash/isEmpty';
+import get from 'lodash/get';
+import sum from 'lodash/sum';
+import ClapEmoji from "../../../components/ClapEmoji";
+import RichEditor from "../../../components/RichEditor";
 
 const QuestionForm = (props) => {
   const [form] = Form.useForm();
   const { question= {}, onSuccess, saving } = props;
-  const [videoData, setVideoData] = useState(null);
+  const [videoData, setVideoData] = useState({});
 
   useEffect(() => { 
+    if(isEmpty(question)) {
+      form.resetFields();
+    } else {
     form.setFieldsValue({
       ...question,
     });
+    }
   }, [question]);
 
   
   const handleFinish = (values) => { 
-    onSuccess({...question,...values,videoData: videoData || question.videoData});
+    onSuccess({...question,...values,videoData: !isEmpty(videoData) ? videoData : get(question,'videoData', {})});
   }
 
   const handleInsertClicked = (videoData) => {
@@ -57,9 +66,11 @@ const QuestionForm = (props) => {
           name="desc"
           label="Description"
         >
-          <Input.TextArea showCount maxLength={500} />
+         <RichEditor/>
         </Form.Item>
-
+        <Form.Item name='claps' label='Participation Clap 👏 '>
+          <InputNumber min={1} max={100}  defaultValue={10}/>
+         </Form.Item>
         <Form.Item wrapperCol={{ offset: 20 }}>
           <Button type="primary" htmlType="submit" loading={saving}>
            {saving ? 'Saving': 'Save'} 
@@ -142,20 +153,19 @@ const QuestionFormContainer = ({
     handleDeleteQuestion(q);
   }
   const handleQuestionEdit = (question) => {
-    console.log('editQuestion',editQuestion);
     setShowQuestionModal(false);
     setEditQuestion(question);
     setShowQuestionModal(true);
   }
   const handleEdiModalSave = (question) => {
     setSaving(true);
-    handleEditQuestion(question);
+    handleEditQuestion({...question, videoData: get(question,'videoData', {})});
   }
   return (
     <>
       <Modal
         visible={showQuestionModal}
-        title={editQuestion ? `Edit Question` : "Add New Question"}
+        title={editQuestion ? `Edit Task` : "Add New Task"}
         forceRender={true}
         footer={null}
         onCancel={() => setShowQuestionModal(false)}
@@ -169,11 +179,16 @@ const QuestionFormContainer = ({
       </Modal>
       <Card
         bordered={false}
-        title="Add New Question"
+        title={
+          <>
+          <div>Add New Task</div>
+          <div>Total Participation Claps : <ClapEmoji count={sum(questions.map((q) => q.claps))} /></div>
+          </>
+        }
         extra={
           <div>
             <Button type="primary" onClick={creteNewQuestion} disabled={isPreview}>
-              New Question
+              New Task 
             </Button>
           </div>
         }

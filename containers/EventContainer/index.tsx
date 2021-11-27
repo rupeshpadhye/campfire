@@ -12,7 +12,12 @@ import InviteParticipants from "./InviteParticipants";
 
 const { TabPane } = Tabs;
 
-const EventContainer = ({ event, setEventData }) => {
+type Props = {
+  event : any,
+  setEventData?: (any) => void
+}
+
+const EventContainer: React.FC<Props> = ({ event, setEventData }) => {
   const id = get(event, "id");
   const isPreview = get(event, "type") === 'template';
   const invitedUsers = map(get(event,'invites', []), e => {
@@ -31,7 +36,7 @@ const EventContainer = ({ event, setEventData }) => {
           {!isPreview ? <DeleteEvent event={event} /> : null}
         </TabPane>
         {id && (
-          <TabPane tab="Questions" key="2">
+          <TabPane tab="Tasks" key="2">
             <div style={{ width: "800px" }}>
               <QuestionFormContainer
                 event={event}
@@ -46,6 +51,7 @@ const EventContainer = ({ event, setEventData }) => {
             <InviteParticipants invites={invitedUsers} eventId={get(event,'id')} />
           </div>
         </TabPane>}
+        
       </Tabs>
     </div>
   );
