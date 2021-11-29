@@ -29,7 +29,11 @@ const QuestionForm = (props) => {
 
   
   const handleFinish = (values) => { 
-    onSuccess({...question,...values,videoData: !isEmpty(videoData) ? videoData : get(question,'videoData', {})});
+    console.log(values);
+    onSuccess({
+      ...question,
+      ...values,
+      videoData: !isEmpty(videoData) ? videoData : get(question,'videoData', {})});
   }
 
   const handleInsertClicked = (videoData) => {
@@ -61,7 +65,7 @@ const QuestionForm = (props) => {
           label="You can add more description by recording a video."
         >
           <LoomRecordButton type='default' icon={<VideoCameraAddOutlined/>} btnLabel='Record' onInsertClicked={handleInsertClicked}/>
-          <VideoPreview videoData={videoData || (question && question.videoData)}/>
+          { !isEmpty(videoData || (question && question.videoData)) && <VideoPreview videoData={videoData || (question && question.videoData)}/>}
         </Form.Item>
         <Form.Item
           name="desc"
@@ -69,8 +73,8 @@ const QuestionForm = (props) => {
         >
          <RichEditor/>
         </Form.Item>
-        <Form.Item name='claps' label='Participation Clap 👏 '>
-          <InputNumber min={1} max={100}  defaultValue={10}/>
+        <Form.Item name='claps' label='Participation Claps 👏 '>
+          <InputNumber min={1} max={100}  defaultValue={5}/>
          </Form.Item>
         <Form.Item wrapperCol={{ offset: 20 }}>
           <Button type="primary" htmlType="submit" loading={saving}>

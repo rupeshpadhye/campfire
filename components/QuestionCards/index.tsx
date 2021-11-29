@@ -59,7 +59,7 @@ export const QuestionCard = ({
               disabled={!question.id}
               icon={<DeleteOutlined />}
             >
-              Edit
+              Delete
             </Button>
             <Button
               type="dashed"
@@ -67,7 +67,7 @@ export const QuestionCard = ({
               disabled={!question.id}
               icon={<EditOutlined />}
             >
-              Delete
+              Edit
             </Button>
           </div>
       ]}

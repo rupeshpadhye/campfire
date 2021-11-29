@@ -4,7 +4,7 @@
         border-bottom: none;
     }
     :global .ant-card-body {
-        padding-top: 0;
+        padding: 0;
     }
     :global .ant-card-actions > li {
        text-align: right;
@@ -30,4 +30,9 @@
 .answerLabels {
     font-weight: 600;
     color: gray;
+}
+
+.uploadVideo {
+    width: 500px;
+    margin: auto;
 }

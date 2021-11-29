@@ -61,9 +61,23 @@ model UserQuestionAnswers {
   question    Question   @relation(fields: [questionId], references: [id])
   questionId  Int
   videoData Json?
+  totalClaps Int @default(5)
+  answerClaps AnswerClaps[]
   @@index([userId], name: "userId")
   @@unique([userId, questionId], name: "userAnswer")
   @@map(name: "user_question_answers")
+}
+
+model AnswerClaps {
+  id        Int     @default(autoincrement()) @id
+  user    User   @relation(fields: [userId], references: [id])
+  userId  Int
+  answer    UserQuestionAnswers   @relation(fields: [answerId], references: [id])
+  answerId  Int
+  clapCount Int @default(1)
+  @@index([userId], name: "userId")
+  @@unique([userId, answerId], name: "userAnswerClap")
+  @@map(name: "answer_claps")
 }
 
 
@@ -80,7 +94,8 @@ model User {
   assingedEvents UserQuestionAnswers[]
   membershipManager  Members[] @relation("membershipManager")
   members Members[] @relation("user")
-  eventsInvitedTo EventInvite[] 
+  eventsInvitedTo EventInvite[]
+  giventClaps AnswerClaps[] 
   organization Organization? 
   organizationId Int?
   @@map(name: "users")

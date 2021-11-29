@@ -5,6 +5,7 @@ export default async function handle(req, res) {
   const answerId = parseInt(req.query.answerId);
   const { answer } = req.body;
   switch (req.method) {
+      
     case 'PUT':
         return updateAnswer();
     case 'DELETE':

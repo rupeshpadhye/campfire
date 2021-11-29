@@ -6,7 +6,7 @@ const VideoPreview = ({ videoData }) => {
  
     const loadVideo = async() => { 
         if(videoData&& videoData.embedUrl){
-            const { html } = await oembed(videoData.sharedUrl, { width: 400 });
+            const { html } = await oembed(videoData.sharedUrl, { width: 600, height: 300 });
             setVideoHTML(html);
         }
     }

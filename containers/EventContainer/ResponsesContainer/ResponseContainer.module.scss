@@ -1,0 +1,51 @@
+.container {
+    :global {
+        .ant-list {
+           min-height: 800px;
+           padding: 8px;
+        }
+        .ant-list-item {
+            padding: 16px;
+            border: 8px solid #d8d8d8;
+            cursor: pointer;
+            background: white;
+           
+            &-meta {
+              align-items: center;
+            }
+        }
+        .ant-list-split .ant-list-item:last-child {
+          border-bottom: 8px solid #d8d8d8;
+        }
+    }
+}
+.responseContainer {
+    padding: 0 16px;
+}
+
+.responseCarousel {
+    bottom: 0;  
+    :global {
+        .slick-dots {
+            position: relative;
+            bottom: -40px;
+            li {
+              height: 8px;
+              button {
+                background: linear-gradient(135deg, rgb(122, 101, 230) 0%, rgb(248, 187, 206) 100%) !important;
+                height: 12px;
+              }
+            }
+          }
+    } 
+  }
+
+  .noDataSvg {
+    width: 400px;
+    height: 400px;
+    margin: 0 auto;
+    padding: 24px;
+    h3 {
+      text-align: center;
+    }
+  }

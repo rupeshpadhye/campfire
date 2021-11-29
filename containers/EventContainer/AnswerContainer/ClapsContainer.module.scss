@@ -1,0 +1,17 @@
+.clapsContainer {
+    padding: 16px;
+    background: linear-gradient( 
+        135deg, #f0f2f5 0%, #e7aad7 100%);
+    border-radius: 0px !important;
+    // margin: 24px -48px -24px;
+    :global {
+        .ant-card-head-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .ant-card-body {
+            padding: 24px;
+        }
+    }
+}

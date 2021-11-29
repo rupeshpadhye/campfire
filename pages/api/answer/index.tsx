@@ -13,6 +13,7 @@ export default async function handle(req, res) {
             }
         },
         videoData: get(answer, "videoData",{}),
+        totalClaps: get(answer, "totalClaps", 0),
         question: {
             connect: {
                 id: questionId

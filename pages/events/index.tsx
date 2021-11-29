@@ -58,7 +58,6 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res, }) => {
       },
     });
     events = JSON.parse(safeJsonStringify(events));
-    console.log('evetns',events)
     return { props: { events, templateEvents: templates } };
   } else {
     const invitedEvents = await prisma.eventInvite.findMany({

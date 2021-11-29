@@ -10,6 +10,7 @@ import { signOut } from 'next-auth/client';
 
 import 'antd/dist/antd.css';
 import './app.scss';
+import { SWRConfig } from 'swr';
 
 const App = ({ Component, pageProps }: AppProps) => {
   const auth = get(Component,'defaultProps.auth', {
@@ -17,6 +18,9 @@ const App = ({ Component, pageProps }: AppProps) => {
   });
   return (
     <Provider session={pageProps.session}>
+    <SWRConfig value={{
+      fetcher: (url, config) => fetch(url, config).then(res => res.json())
+    }}>
       <AppStateProvider>
       {get(auth, 'isPublic') ?
         <Component {...pageProps} /> 
@@ -26,6 +30,7 @@ const App = ({ Component, pageProps }: AppProps) => {
         </Auth>
       )}
       </AppStateProvider>
+      </SWRConfig>
     </Provider>
   );
 };

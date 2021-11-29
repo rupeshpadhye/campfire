@@ -1,11 +1,20 @@
 .container {
     display: flex;
-    align-items: center;
-    justify-content: center;
     flex-direction: column;
    // margin-top: 100px;
     h1 {
         font-size: 24px;
         font-weight: 600;
     }
+}
+.cardHolder {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+.centerPane {
+    margin: auto;
+    width: 600px;
 }

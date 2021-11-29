@@ -8,13 +8,13 @@ import prisma from "../../../lib/prisma";
 
 import { Button, Card, Layout, notification, PageHeader, Tabs } from "antd";
 import { Carousel } from 'antd';
-import QuestionAnswerCard  from "../../../components/QuestionCards/QuestionAnswerCard";
 import get from 'lodash/get';
 const { Header, Content } = Layout;
 
 import styles from "./event.module.scss";
 import { EventInformation } from ".";
 import AnswerContainer from "../../../containers/EventContainer/AnswerContainer";
+import LeaderBoard from "../../../containers/EventContainer/ResponsesContainer/LeaderBoard";
 
 const { TabPane } = Tabs;
 export const getServerSideProps: GetServerSideProps = async ({
@@ -82,14 +82,15 @@ const Participate = ({ event, userAnswers }) => {
 
       <Content   className={styles.participatePageContent}>
           <Tabs defaultActiveKey="1">
-          <TabPane tab="Tasks" key="1">
-            <div className={styles.participateCarousel}>
-              {/* <Carousel swipeToSlide draggable> */}
+        <TabPane tab="Tasks" key="1">
+            <div className={styles.participateCarousel}>  
                 <AnswerContainer questions={questions} userAnswers={userAnswers} />
-              {/* </Carousel>   */}
               </div>
         </TabPane>
-        <TabPane tab="Details" key="2">
+        <TabPane tab="All Responses" key="2">
+          <LeaderBoard event={event}/>
+        </TabPane>
+        <TabPane tab="Details" key="3">
           <EventInformation event={event} role='member' hideActions={true} handleEdit={null} />
         </TabPane>
        

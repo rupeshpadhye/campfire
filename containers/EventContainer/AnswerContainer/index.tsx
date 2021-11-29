@@ -1,27 +1,36 @@
 import React, { useEffect, useState } from "react";
-import { Card, Modal, notification, Tabs, Tooltip } from "antd";
+import { Card, Carousel, Modal, notification, Tabs, Tooltip } from "antd";
 import { Form, Button, Input } from "antd";
 
 import styles from "./AnswerContainer.module.scss";
 import { DeleteOutlined, VideoCameraFilled } from "@ant-design/icons";
 import get from "lodash/get";
+import isEmpty from 'lodash/isEmpty';
 import LoomRecordButton from "../../../components/Video/RecordButton";
 import ClapEmoji from "../../../components/ClapEmoji";
 import VideoPreview from "../../../components/Video/VideoPreview";
 import Plane from "../../../components/Loading/Plane";
-
+import Claps from "../../../components/Loading/Claps";
+import UploadVideo from "./../../../public/uplod_video.svg";
+import ClapsContainer from "./ClapsContainer";
 type QuestionProps = {
   question: any;
   handleAnswer?: (question: any, answer: any) => void;
   handleDelete?: (any) => void;
   index: number;
+  preview: boolean;
+  clapsContainer?: React.ReactNode;
 };
+
+
 
 export const QuestionAnswerCard = ({
   question,
   index,
   handleAnswer,
   handleDelete,
+  preview,
+  clapsContainer,
 }: QuestionProps) => {
   const [showDescQuestionId, setShowDescQuestionId] = useState(null);
   const answer = get(question, "answer", null);
@@ -34,40 +43,59 @@ export const QuestionAnswerCard = ({
         </div>
       }
       key={index}
-      actions={[
-        <div>
-          <LoomRecordButton
-            btnLabel={answer ? "Submit Again" : "Answer"}
-            type={answer ? "default" : "primary"}
-            icon={<VideoCameraFilled />}
-            onInsertClicked={(videoData) => {
-              handleAnswer(question, { ...answer, videoData });
-            }}
-          />
-        </div>,
-      ]}
+      actions={
+        preview || !isEmpty(answer) 
+          ? null
+          : [
+              <div>
+                <LoomRecordButton
+                  btnLabel={answer ? "Submit Again" : "Answer"}
+                  type={answer ? "default" : "primary"}
+                  icon={<VideoCameraFilled />}
+                  onInsertClicked={(videoData) => {
+                    handleAnswer(question, { ...answer, videoData });
+                  }}
+                />
+              </div>
+            ]
+      }
       extra={
-        <div>
-          <Button
-            type="text"
-            onClick={() =>
-              setShowDescQuestionId(showDescQuestionId ? null : question.id)
-            }
-            disabled={!question.id}
-          >
-            {showDescQuestionId === question.id ? "Hide Info" : "View  More"}
-          </Button>
-          <Tooltip title="Delete Answer">
+        preview ? null : (
+          <div>
+            
             <Button
               type="text"
-              style={{ marginRight: "4px" }}
-              danger={true}
-              icon={<DeleteOutlined />}
-              onClick={() => handleDelete(question.answer)}
-              disabled={!question.answer}
-            />
-          </Tooltip>
-        </div>
+              onClick={() =>
+                setShowDescQuestionId(showDescQuestionId ? null : question.id)
+              }
+              disabled={!question.id}
+            >
+              {showDescQuestionId === question.id ? "Hide Info" : "View  More"}
+            </Button>
+            {question.answer ? (
+              <Tooltip title="Delete Answer">
+                <Button
+                  type="text"
+                  style={{ marginRight: "4px" }}
+                  danger={true}
+                  icon={<DeleteOutlined />}
+                  onClick={() => handleDelete(question.answer)}
+                  disabled={!question.answer}
+                />
+              </Tooltip>
+            ) : null}
+            {answer && 
+               <LoomRecordButton
+                 btnLabel={'Re Record'}
+                 type={answer ? "text" : "primary"}
+                 icon={<VideoCameraFilled />}
+                 onInsertClicked={(videoData) => {
+                   handleAnswer(question, { ...answer, videoData });
+                 }}
+               />
+            }
+          </div>
+        )
       }
     >
       {showDescQuestionId === question.id ? (
@@ -85,38 +113,40 @@ export const QuestionAnswerCard = ({
       ) : null}
       {answer ? (
         <>
-          <div>
-            <p className={styles.answerLabels}>Total Earned Claps</p>
-            <ClapEmoji
-              onClick={() => {}}
-              count={get(question, "answer.clapCount", question.claps)}
-            />
-          </div>
-          <p className={styles.answerLabels} style={{ marginTop: "8px" }}>
-            Your Answer
-          </p>
           <VideoPreview videoData={answer.videoData} />
+           {clapsContainer}
         </>
-      ) : null}
+      ) : (
+        <div>
+          <div className={styles.uploadVideo}>
+            <UploadVideo />
+          </div>
+          <h2 style={{ textAlign: "center", margin: "8px" }}>
+            Complete This Task And Earn {question.claps} 👏{" "}
+          </h2>
+        </div>
+      )}
     </Card>
   );
 };
 
 const AnswerContainer = ({ questions, userAnswers }) => {
   const [userQuestionsAnswers, setUserQuestionsAnswers] = React.useState([]);
-  const [ saving , setSaving ] = useState(false);
+  const [saving, setSaving] = useState(null);
   useEffect(() => {
-    const questionAnswers = questions.map((question) => {
-      const answer = userAnswers.find(
-        (answer) => answer.questionId === question.id
-      );
-      return {
-        ...question,
-        answer,
-      };
-    });
+    if(isEmpty(userQuestionsAnswers)) {
+      const questionAnswers = questions.map((question) => {
+        const answer = userAnswers.find(
+          (answer) => answer.questionId === question.id
+        );
+        return {
+          ...question,
+          answer,
+        };
+      });
+      setUserQuestionsAnswers(questionAnswers);
+    }
 
-    setUserQuestionsAnswers(questionAnswers);
   }, [event, userAnswers]);
 
   const submitAnswer = async ({ question, answer }) => {
@@ -125,14 +155,14 @@ const AnswerContainer = ({ questions, userAnswers }) => {
     if (!questionId) {
       return;
     }
-    setSaving(true);
+    setSaving("saving");
     try {
       const resp = await fetch(
         answerId ? `/api/answer/${answerId}` : `/api/answer`,
         {
           method: answerId ? "PUT" : "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ answer, questionId }),
+          body: JSON.stringify({ answer: {...answer,totalClaps: question.claps }, questionId }),
         }
       ).then((res) => res.json());
       const questionIndex = userQuestionsAnswers.findIndex(
@@ -140,17 +170,20 @@ const AnswerContainer = ({ questions, userAnswers }) => {
       );
       userQuestionsAnswers[questionIndex].answer = resp;
       setUserQuestionsAnswers([...userQuestionsAnswers]);
-      setSaving(false);
+      if (!answerId) {
+        setSaving("answeredNewQuestion");
+      } else {
+        setSaving(null);
+      }
     } catch (e) {
       console.log(e);
-      setSaving(false);
+      setSaving(null);
     }
   };
   const deleteAnswer = async (answer) => {
     const { id } = answer;
-    console.log(id, 'deletingAnswer');
     try {
-      setSaving(true);
+      setSaving("saving");
       await fetch(`/api/answer/${id}`, {
         method: "DELETE",
       }).then((res) => res.json());
@@ -160,17 +193,17 @@ const AnswerContainer = ({ questions, userAnswers }) => {
           : question;
       });
       setUserQuestionsAnswers([...newQuestions]);
+      console.log('after delete',newQuestions);
       notification.success({
         message: "Answer Removed.",
       });
-      setSaving(false);
+      setSaving(null);
     } catch (error) {
       console.log(error);
       notification.error({
         message: "Error Deleting Answer.",
       });
-      setSaving(false);
-
+      setSaving(null);
     }
   };
 
@@ -182,25 +215,52 @@ const AnswerContainer = ({ questions, userAnswers }) => {
     submitAnswer({ question, answer });
   };
 
- 
+  const closable = saving === "answeredNewQuestion";
 
   return (
     <>
-      <Modal visible={true} footer={null} closable={false} maskClosable={false} >
-           <Plane/>
-            <h3 style={{textAlign: 'center'}}> Processing Your Request... </h3>
-       </Modal>   
-      {userQuestionsAnswers.map((question, index) => {
-        return (
+      <Modal
+        visible={!!saving}
+        footer={null}
+        closable={closable}
+        maskClosable={closable}
+        onCancel={() => setSaving(null)}
+      >
+        {saving === "saving" ? (
+          <>
+            {" "}
+            <Plane />
+            <h3 style={{ textAlign: "center" }}>
+              {" "}
+              Processing Your Request...{" "}
+            </h3>
+          </>
+        ) : null}
+        {saving === "answeredNewQuestion" ? (
+          <>
+            <Claps />
+            <h3 style={{ textAlign: "center" }}>
+              {" "}
+              Congrats! You earned Participation Claps{" "}
+            </h3>
+          </>
+        ) : null}
+      </Modal>
+      <Carousel>
+        {userQuestionsAnswers.map((question, index) => {
+          return (
             <QuestionAnswerCard
               index={index}
               question={question}
               key={index}
               handleAnswer={onAnswerSubmitted}
               handleDelete={onAnswerDeleted}
-            />
-        );
-      })}
+              preview={false}
+              clapsContainer={<ClapsContainer question={question} canClap={false} />}
+            />              
+          );
+        })}
+      </Carousel>
     </>
   );
 };

@@ -40,8 +40,6 @@ export default function LoomRecordButton({ btnLabel, onInsertClicked, type, icon
   }, []);
 
   return (
-    <>
       <Button id={buttonId} type={type || 'default'} icon={icon}>{btnLabel}</Button>
-    </>
   );
 }

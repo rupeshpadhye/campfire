@@ -7,6 +7,11 @@
     margin-left: 200px;
     padding: 24px;
 }
+.layoutContentWithoutSider {
+    display: flex;
+    flex-direction: column;
+    padding: 24px;
+}
 .layoutInnerContainer {
     margin-top: 64px;
 }
@@ -34,6 +39,7 @@
     display: flex;
     justify-content: center;
     cursor: pointer;
+    align-items: center;
 }
 
 .logoutBtn {
@@ -47,4 +53,8 @@
     left: 0;
     height: 100vh;
     z-index: 10;
+}
+
+.backButton {
+    margin-right: 8px;
 }

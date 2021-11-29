@@ -9,6 +9,7 @@ import map from 'lodash/map';
 import styles from "./EventContainer.module.scss";
 import CopyEventTemplate from "./CopyEvenetTemplate";
 import InviteParticipants from "./InviteParticipants";
+import ResponsesContainer from "./ResponsesContainer";
 
 const { TabPane } = Tabs;
 
@@ -25,19 +26,17 @@ const EventContainer: React.FC<Props> = ({ event, setEventData }) => {
   });
   return (
     <div className={styles.container}>
-      <div style={{ width: "800px" }}>
-      {isPreview ? <CopyEventTemplate event={event}/> : null }
-      </div>
-      <Tabs defaultActiveKey="1">
+      <Tabs defaultActiveKey="4">
         <TabPane tab="Information" key="1">
-          <Card style={{ width: "800px" }}>
+          <div className={styles.centerPane}>
+          <Card >
             <EventInformationForm event={event} isPreview={isPreview} />
           </Card>
-          {!isPreview ? <DeleteEvent event={event} /> : null}
+          </div>
         </TabPane>
         {id && (
           <TabPane tab="Tasks" key="2">
-            <div style={{ width: "800px" }}>
+            <div className={styles.centerPane}>
               <QuestionFormContainer
                 event={event}
                 setEventData={setEventData}
@@ -46,12 +45,22 @@ const EventContainer: React.FC<Props> = ({ event, setEventData }) => {
             </div>
           </TabPane>
         )}
-        {!isPreview && <TabPane tab="Participants" key="3">
-          <div style={{ width: "800px" }}>
+        <TabPane tab="Participants" key="3" disabled={isPreview}>
+          <div className={styles.centerPane}>
             <InviteParticipants invites={invitedUsers} eventId={get(event,'id')} />
           </div>
-        </TabPane>}
-        
+        </TabPane>
+        <TabPane tab="Responses" key="4" disabled={isPreview}>
+          <div> 
+            <ResponsesContainer  eventId={get(event,'id')} />
+          </div>
+        </TabPane>
+        <TabPane tab="Settings" key="5">
+          <div className={styles.centerPane}> 
+          {!isPreview ? <DeleteEvent event={event} /> : null}
+          {isPreview ? <CopyEventTemplate event={event}/> : null }
+          </div>
+        </TabPane>
       </Tabs>
     </div>
   );
