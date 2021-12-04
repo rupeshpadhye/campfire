@@ -27,3 +27,16 @@
     color: #8c8c8c;
     display: inline-block;
 }
+.currentPlan {
+    min-height: 300px;
+    ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        text-align: left;
+    }
+    @media only screen and (max-width: 768px) {
+       margin-bottom: 16px;
+    }
+    border: 5px solid green;
+}

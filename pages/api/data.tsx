@@ -23,7 +23,8 @@ export const templates = [
               "embedUrl": "https://www.loom.com/embed/ecd222892caf4d619ec9263fb4b5e72e",
               "sharedUrl": "https://www.loom.com/share/ecd222892caf4d619ec9263fb4b5e72e",
               "providerUrl": "https://www.loom.com"
-            }
+            },
+            "claps": 5
           }
         ],
     },
@@ -37,7 +38,7 @@ export const templates = [
         "backgroundImage": null,
         "uniqueLink": null,
         "expiresAt": null,
-        "eventType": "celebration",
+        "eventType": "kyt",
         "questions": [
           {
             "title": "New Question",
@@ -50,15 +51,14 @@ export const templates = [
               "embedUrl": "https://www.loom.com/embed/ecd222892caf4d619ec9263fb4b5e72e",
               "sharedUrl": "https://www.loom.com/share/ecd222892caf4d619ec9263fb4b5e72e",
               "providerUrl": "https://www.loom.com"
-            }
+            },
+            "claps": 5
           }
         ],
     },
 ]
-
-
 export const kycTemplates = [    {
-  "id": "ice-breaker",
+  "id": "know-the-team",
   "type": "template",
   "title": "Ice Breaker",
   "content": "Hello, Help team member to know about you apart from work. You can easily discover and learn about coworkers on other teams. ",
@@ -68,56 +68,29 @@ export const kycTemplates = [    {
   "uniqueLink": null,
   "expiresAt": null,
   "eventType": "icebreaker",
+  "isForeverActive": true,
   "questions": [
     {
       "title": "Tell us about your career journey",
       "desc": "",
       "videoData": {
-      }
+      },
+      "claps": 5
     },
     {
       "title": "What things you like to do when your are not working",
       "desc": "Would love to hear how you spend your time , your ho",
       "videoData": {
-      }
+      },
+      "claps": 5
     },
     {
       "title": "What was your last bing watch or favourite movie",
       "desc": "Would love to hear how you spend your time , your ho",
       "videoData": {
-      }
+      },
+      "claps": 5
     },
   ],
 }, 
-{
-  "id": "company-culture",
-  "type": "template",
-  "title": "Culture",
-  "content": "Hello, Set of questions to hear about company culture , what employee liked or would like to change ",
-  "published": false,
-  "eventType": "culture",
-  "headerImage": "https://lindseyelmore.com/wp-content/uploads/2020/04/video-call.jpg",
-  "backgroundImage": null,
-  "uniqueLink": null,
-  "expiresAt": null,
-  "questions": [
-    {
-      "title": "How is the company culture and how you liked it",
-      "desc": "",
-      "videoData": {
-      }
-    },
-    {
-      "title": "What is your most memorable thing with the company",
-      "desc": "",
-      "videoData": {
-      }
-    },
-    {
-      "title": "How is your experience with the company till date",
-      "desc": "",
-      "videoData": {
-      }
-    },
-  ],
-}];
+];

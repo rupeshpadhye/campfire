@@ -1,9 +1,10 @@
 import { GetServerSideProps } from 'next';
-import { getSession } from 'next-auth/client';
+import { getSession, useSession } from 'next-auth/client';
 import React from 'react';
 import CompleteProfileModal from '../../containers/ProfileContainer/CompleteProfileModal';
 import prisma from '../../lib/prisma';
-
+import get from 'lodash';
+import { Router, useRouter } from 'next/router';
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
     const session = await getSession({ req });
@@ -49,7 +50,17 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
 }
 
 const OnboardUser = () => { 
-    return <CompleteProfileModal/>
+   const [ session , loading ] =  useSession();
+   const router = useRouter();
+
+   const isProfileComplete =
+   get(session, "user.name") && get(session, "user.image");
+
+   const handleVisible = () => {
+        router.push('/events');
+   }
+
+  return <CompleteProfileModal visible={!isProfileComplete} setVisible={handleVisible}/>
 }
 
 

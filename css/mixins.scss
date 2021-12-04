@@ -12,6 +12,20 @@
     padding: 24px;
 }
 
+@mixin secondaryButton
+ {
+    height: 32px;
+    background-color: rgb(221, 224, 237);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px;
+    font-weight: bold;
+    color: rgb(111, 116, 189);
+    line-height: 27px;
+    padding: 24px;
+}
+
 
 @mixin primaryButtonSmall
  {

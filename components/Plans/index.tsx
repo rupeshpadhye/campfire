@@ -5,16 +5,17 @@ import { Row, Col, Card, Button } from 'antd';
 import styles from './Plans.module.scss';
 import React from 'react';
 
-const Plans = ({selectedPlan}) => {
+const Plans = ({selectedPlan, currentPlan}) => {
     return (
         <div>
         <Row gutter={16} className={styles.pricing}>
         <Col md={6}  xs={24}>
           <Card title="Free" bordered={false} className={styles.pricingCard}
           actions={[
-            <Button 
+              <Button 
                 className={styles.joinPlanBtn} 
                 onClick={() => { selectedPlan('free')}} 
+                disabled={currentPlan=== 'free'}
                 >Join Now
                 </Button>
             ]}
@@ -32,6 +33,7 @@ const Plans = ({selectedPlan}) => {
                 <Button 
                     className={styles.joinPlanBtn} 
                     onClick={() => { selectedPlan('basic')}} 
+                    disabled={currentPlan=== 'basic'}
                     >
                             Join Now
                     </Button>
@@ -45,13 +47,14 @@ const Plans = ({selectedPlan}) => {
           </Card>
         </Col>
         <Col md={6} xs={24}>
-          <Card title="Pro" bordered={false} className={styles.pricingCard}
+          <Card title="Pro" bordered={false} className={currentPlan === 'pro' ? styles.currentPlan : styles.pricingCard}
             actions={[
                 <Button 
                     className={styles.joinPlanBtn} 
                     onClick={() => { selectedPlan('pro')}} 
+                    disabled={currentPlan=== 'pro'}
                     >
-                        Join Now
+                       {currentPlan === 'pro' ?  'Current Plan' :'Join Now' }
                     </Button>
                 ]}
           >

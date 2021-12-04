@@ -1,72 +1,95 @@
 import AppLayout from "../../components/AppLayout";
-import { Tabs } from "antd";
+import { Card, Tabs, Form, Input, Row, Col } from "antd";
 import AddMembers from "../../containers/AddMembers";
 import prisma from "../../lib/prisma";
 import { GetServerSideProps } from "next";
 import { getSession } from "next-auth/client";
 import safeJsonStringify from "safe-json-stringify";
 import Plans from "../../components/Plans";
-
+import styles from './settings.module.scss'
 const { TabPane } = Tabs;
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   const session = await getSession({ req });
-
-//  const result = await prisma.user.findUnique({ 
-//     select: {
-//       id: true,
-//       organization: {
-//         select: {
-//           id: true,
-//           name: true,
-//       }
-//     },
-//       members: {
-//         select: {
-//           user: {
-//             select: {
-//               id: true,
-//               name: true,
-//               email: true,
-//               image: true,
-//             }
-//         },
-//       },
-//       where: {
-//         createdBy: { connect: { email: session.user.email } } 
-//     },
-//   },
-//   where: { email: session.user.email} 
-//   });
-//  console.log('result',result);
-  const members = await prisma.members.findMany({ where: { user: { id: session.uid } } });
-  const users = await prisma.user.findMany(
-      { where: { id: { in: members.map(member => member.userId) } } });
-   const addedMembers = JSON.parse(safeJsonStringify(users));
-  return { props: { members: addedMembers } };
+  const [members, { organization }] = await Promise.all([
+    prisma.members.findMany({
+      where: {
+        createdBy: {
+          is: {
+            email: session.user.email,
+          },
+        },
+      },
+    }),
+    prisma.user.findUnique({
+      select: {
+        organization: {
+          select: {
+            name: true,
+            website: true,
+            logo: true,
+            planId: true
+          }
+        },
+      },
+      where: {
+        email: session.user.email,
+      },
+    }),
+  ]);
+  const users = await prisma.user.findMany({
+    where: { id: { in: members.map((member) => member.userId) } },
+  });
+  const addedMembers = JSON.parse(safeJsonStringify(users));
+  return { props: { members: addedMembers, organization } };
 };
 
-const OrganizationInfo = ({}) => {
+const plans = {
+  1: 'free',
+  2: 'basic',
+  3: 'pro'
+}
+const OrganizationInfo = ({ organization ={ name: '', website: '', planId: 1} }) => {
+  const { name , website, planId} = organization;
+  const [form] = Form.useForm();
+
   return (
     <div>
-      <h1>Organization Info</h1>
-
-    </div>);
+      <Card title='Organization Info'>
+        <Row>
+          <Col md={12}>
+          <h2>Company Name : </h2>
+          </Col>
+          <Col md={12}>
+           {name}
+          </Col>
+        </Row>
+        <Row>
+        <Col  md={12}>
+           <h2>Website :</h2>  
+          </Col>
+          <Col  md={12}>
+          {website}
+          </Col>
+        </Row>
+      </Card>
+      <div className={styles.subscription}>
+       <h1>Current Subscription : <span className={styles.plan}>{plans[planId]}</span></h1>
+        <Plans selectedPlan={null} currentPlan={plans[planId]} />
+      </div>
+    </div>
+  );
 };
 
-const Settings = ({ members }) => {
+const Settings = ({ members, organization }) => {
   return (
     <AppLayout>
-       <Tabs defaultActiveKey="1" size='middle' tabPosition='left'>
-        <TabPane tab="Organization" key="1" >
-          <OrganizationInfo />
-        </TabPane> 
-        <TabPane tab="Members" key="2" >
-          <AddMembers members= {members}/>
+      <Tabs defaultActiveKey="1" size="middle" tabPosition="left">
+        <TabPane tab="Organization" key="1">
+          <OrganizationInfo  organization={organization}/>
         </TabPane>
-        <TabPane tab="Subscriptions" key="3" >
-            <h1>Subscription Information</h1>
-            <Plans selectedPlan={null}/>
+        <TabPane tab="Members" key="2">
+          <AddMembers members={members} />
         </TabPane>
       </Tabs>
     </AppLayout>
@@ -78,7 +101,7 @@ export default Settings;
 Settings.defaultProps = {
   auth: {
     isPublic: true,
-    redirect: '/',
-    role: ['creator'],
-  }
- }
+    redirect: "/",
+    role: ["creator"],
+  },
+};

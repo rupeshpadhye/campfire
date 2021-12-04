@@ -1,13 +1,12 @@
 import React, { useEffect } from "react";
 import { GetServerSideProps } from "next";
 import Layout from "../../../components/AppLayout";
-import styles from './../events.module.scss';
 
-import { templates } from "../../api/data";
+import { kycTemplates } from "../../api/data";
 import EventContainer from "../../../containers/EventContainer";
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   const { id } = params;
-  const event = templates.find(template => template.id === id);
+  const event = kycTemplates.find(template => template.id === id);
   if(!event) {
     return {
       props: { event: { questions:[]} } ,

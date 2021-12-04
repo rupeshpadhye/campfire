@@ -93,3 +93,16 @@
   width: 600px;
   margin: auto;
 }
+
+.votingWindow {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  svg {
+    width: 800px;
+    height: 600px;
+  }
+  h2 {
+    margin-top: 16px;
+  }
+}

@@ -7,7 +7,6 @@ import UploadButton from "../../components/UploadButton";
 import JoyRide from "./../../public/joyride.svg";
 
 import styles from "./CompleteProfileModal.module.scss";
-import  Router  from "next/router";
 
 const WelcomeHeader = () => {
   return (
@@ -16,9 +15,8 @@ const WelcomeHeader = () => {
     </div>
   );
 };
-const CompleteProfileModal = () => {
+const CompleteProfileModal = ({ visible, setVisible, isDefaultModal = false }) => {
   const [session, loading] = useSession();
-  const [visible, setVisible] = useState(false);
   const [name, setName] = useState(null);
   const [avatar, setAvatar] = useState(null);
   const [saving , setSaving ] = useState(false);
@@ -50,7 +48,8 @@ const CompleteProfileModal = () => {
         body: JSON.stringify({ name, image: avatar }),
       });
       setSaving(false);
-      Router.reload();
+      //Router.reload();
+      setVisible(false);
   } catch (e) {
     console.log(e);
     setSaving(false);
@@ -64,16 +63,16 @@ const CompleteProfileModal = () => {
     return null;
   }
   return (
-    <div className={styles.fullScreenModal}>
-      <div className={styles.joyride}>
+    <div className={!isDefaultModal && styles.fullScreenModal}>
+     { !isDefaultModal &&  <div className={styles.joyride}>
         <JoyRide />
-      </div>
+      </div>}
       <Modal
         visible={visible}
         title={<WelcomeHeader />}
         forceRender={true}
-        closable={false}
-        maskStyle={{
+        closable={isDefaultModal}
+        maskStyle={!isDefaultModal &&{
           background: "white",
           backgroundImage: `linear-gradient(135deg, rgb(122, 101, 230) 0%, rgb(248, 187, 206) 100%)`,
           zIndex: 999,
@@ -91,8 +90,8 @@ const CompleteProfileModal = () => {
           </div>
         }
         onCancel={() => setVisible(false)}
-        maskClosable={false}
-        className={styles.welcomeModal}
+        maskClosable={isDefaultModal}
+        className={!isDefaultModal && styles.welcomeModal}
       >
         <h2> Complete Your Profile</h2>
         <div className={styles.welcomeBody}>

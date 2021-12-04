@@ -22,6 +22,7 @@ const { Option } = Select;
 type inviteProps = {
     invites: User[];
     eventId: number;
+    isPreview: boolean;
 };
 
 const InviteItemTag = ({ email, handleClose }) => {
@@ -144,7 +145,7 @@ const InviteForm = ({
   );
 };
 
-const InviteParticipants: React.FC<inviteProps> = ({ invites, eventId }) => {
+const InviteParticipants: React.FC<inviteProps> = ({ invites, eventId, isPreview }) => {
   const [showInviteModal, setShowInviteModal] = React.useState(false);
   const [saving, setSaving] = useState(false);
   const [ inviteData, setInviteData ] = useState(invites);
@@ -216,6 +217,7 @@ const InviteParticipants: React.FC<inviteProps> = ({ invites, eventId }) => {
           }}
           type="primary"
           style={{ marginBottom: "10px" }}
+          disabled={isPreview}
         >
           Add Participants
         </Button>

@@ -18,7 +18,6 @@ const ResponsesContainer = ({ eventId }) => {
   const { data, error } = useSWR(`/api/event/responses/${eventId}`, fetcher);
   const responses = get(data, "responses", []);
   const [userResponses, setUserResponses] = React.useState([]);
-
   if(!data) {
     return <CampFire/>
   }
@@ -76,7 +75,6 @@ const ResponsesContainer = ({ eventId }) => {
               </Carousel>
               </>
             ) :<>
-                <h3 style={{textAlign: 'center'}}>Click On User Name View Response</h3> 
                 <Responses/>
              </>}
         </Col>

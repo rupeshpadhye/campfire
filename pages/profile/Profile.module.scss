@@ -1,0 +1,30 @@
+.profileCard {
+  width: 600px;
+  margin: auto;
+}
+
+.avatarImg {
+  img {
+    box-shadow: rgb(35 43 51 / 16%) 0px 1px 3px 0px;
+    transform-origin: left center;
+    padding: 16px;
+  }
+
+  h1 {
+    font-size: xx-large;
+    font-weight: bold;
+  }
+}
+
+.line {
+  background: linear-gradient(135deg, #e9eff9 0%, #fde4be 100%);
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.editButton {
+    position:absolute;
+    top: 4px;
+    right: 4px;
+}

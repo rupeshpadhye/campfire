@@ -24,6 +24,9 @@ model Event {
   backgroundImage String?
   uniqueLink String?
   expiresAt DateTime?
+  votingStartsAt DateTime?
+  votingEndsAt DateTime?
+  isForeverActive Boolean @default(false)
   questions Question[]
   eventType EventType
   invites EventInvite[]
@@ -48,7 +51,7 @@ model EventInvite {
   eventId  Int  
   user    User   @relation(fields: [userId], references: [id])
   userId   Int
-  status  String
+  status  String  @default("pending")
   @@index([eventId], name: "eventId")
   @@unique([userId, eventId], name: "eventInvite")
   @@map(name: "eventInvites")
@@ -203,4 +206,5 @@ enum EventType {
   celebration
   icebreaker
   culture
+  kyt
 }

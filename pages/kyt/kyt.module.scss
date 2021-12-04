@@ -1,0 +1,128 @@
+@import './../../css/mixins.scss';
+
+
+.createEventSvg {
+    width: 400px;
+    padding: 16px;
+}
+.createEventLottie > div:first-child {
+    position: absolute;
+}
+.createEventCard {
+    position: relative;
+    border: 1px solid #e6e6e6;
+    margin: 16px 0;
+    background:  #D4D1EC;
+    h1 {
+        margin: 0;
+    }
+    h5 {
+      margin: 8px 0px 16px 0px;      
+      font-size: 18px;
+    }
+}
+.kytMemberSvg {
+    background:  #D4D1EC;
+    display: flex;
+    justify-content: center;
+}
+.kytMember {
+    position: relative;
+    border: 1px solid #e6e6e6;
+    margin: 32px 0;
+    padding: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background:  white;
+    h1 {
+        margin: 0;
+        color: rgba(0, 0, 0, 0.85);
+        font-weight: 600;
+        font-size: 38px;
+        line-height: 1.23;
+    }
+    h5 {
+      margin: 8px 0px 16px 0px;      
+      font-size: 18px;
+    }
+}
+
+.kytMemberButtons {
+    display: flex;
+    flex-direction: column;
+    padding: 16px;
+    button {
+        margin-bottom: 16px;
+    }
+    .submitYours {
+        @include primaryButton;
+    }
+
+    .viewOthers {
+        @include secondaryButton
+    }
+}
+
+.kytMemberContent {
+    padding: 16px;
+}
+
+
+.participatePage {
+    margin: 0;
+    width: 100vw;
+    min-height: 100vh;
+}
+.pageHeader {
+      background: linear-gradient(135deg, rgb(122, 101, 230) 0%, rgb(248, 187, 206) 100%);
+      color: white;
+      position: fixed;
+      width: 100%;
+      z-index: 1;
+      :global .ant-page-header-back-button{
+        color: white;
+      }
+      :global .ant-page-header-heading-title {
+        color: white;
+
+      }
+  
+}
+.participatePageContent {
+  margin-top: 64px;
+  padding: 24px;
+}
+.backButton {
+    position:fixed;
+    top: 16px;
+    left: 16px;
+}
+.participateCarousel {
+  width: 800px;
+  margin: auto;
+
+  padding: 24px;
+  :global .ant-card {     
+    border-radius: 24px;
+    // padding-left: 24px;
+    // padding-right: 24px;
+    padding: 0;
+    &-actions {
+      border-top: none;
+    }
+ }
+
+  :global .ant-carousel .slick-dots {
+    position: relative;
+    bottom: -40px;
+    li {
+      height: 8px;
+      button {
+        background: linear-gradient(135deg, rgb(122, 101, 230) 0%, rgb(248, 187, 206) 100%);
+        height: 12px;
+      }
+    }
+
+  }
+}

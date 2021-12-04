@@ -187,7 +187,10 @@ const QuestionFormContainer = ({
         title={
           <>
           <div>Add New Task</div>
-          <div>Total Participation Claps : <ClapEmoji count={sum(questions.map((q) => q.claps))} /></div>
+          <div style={{
+            padding: '16px 0px',
+            color: '#808080',
+          }}>Total  {sum(questions.map((q) => q.claps))}👏  Claps </div>
           </>
         }
         extra={

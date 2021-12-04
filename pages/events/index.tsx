@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Card, Typography, Row, Col, Button, Image } from "antd";
 import { getSession, useSession } from "next-auth/client";
 import Link from "next/link";
@@ -51,7 +51,6 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res, }) => {
       where: {
         author: { email: session.user.email },
         eventType: eventType,
-        //published: true,
       },
       include: {
         author: true,
@@ -63,13 +62,15 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res, }) => {
     const invitedEvents = await prisma.eventInvite.findMany({
       where: {
         user: { email: session.user.email },
-        event: { is: { eventType: eventType } },
+        event: { is: { eventType: eventType, published: true } },
       },
       include: {
         event: true,
       },
     });
     events = invitedEvents.map((invitedEvent) => invitedEvent.event);
+    events = JSON.parse(safeJsonStringify(events));
+
     return { props: { invitedEvents: events } };
   }
 };
@@ -93,9 +94,17 @@ const CreatorView = ({ events, templateEvents }) => {
 
 const Events: React.FC<EventsProps> = (props) => {
   const { events = [], templateEvents = [], invitedEvents } = props;
+  const [ session , loading ] =  useSession();
+  const [visible, setVisible] = useState(false);
+  useEffect(() => {
+    if(session && !loading) {
+      const showComplete = !get(session, "user.name") || !get(session, "user.image")
+      setVisible(showComplete);
+    }
+  }, [session, loading]);
   return (
     <AppLayout>
-      <CompleteProfileModal />
+      <CompleteProfileModal visible={visible} setVisible={setVisible}/>
       {events.length ? (
         <CreatorView events={events} templateEvents={templateEvents} />
       ) : <MemberView events={invitedEvents} />

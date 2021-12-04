@@ -13,11 +13,18 @@ type Props = {
   onClick?: () => void;
 };
 const ClapEmoji: React.FC<Props> = ({ count, onClick}) => {
-
+  const [animateClap, setAnimateClap] = useState(false);
+  const handleClick = () => {
+    onClick();
+    setAnimateClap(true);
+    setTimeout(() => {
+      setAnimateClap(false);
+    },300);
+  };
   return (
     <>
-
-    { onClick ? <Button  className={styles.clapsCircle} onClick={onClick} >
+    { animateClap ? <span className={styles.wave}>👏 </span> : null}
+    { onClick ? <Button  className={styles.clapsCircle} onClick={handleClick} >
        👏  <span style={{ paddingLeft: "8px" }}> {count} </span>
     </Button> : 
     <div>

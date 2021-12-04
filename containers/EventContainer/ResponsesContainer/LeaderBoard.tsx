@@ -3,7 +3,6 @@ import ResponsesContainer from '.';
 import get from 'lodash/get';
 
 const LeaderBoard = ({ event }) => {
-
     return <ResponsesContainer eventId={get(event,'id')}/>
 }
 

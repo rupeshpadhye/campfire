@@ -1,4 +1,3 @@
-import { ArrowLeftOutlined, BackwardOutlined } from "@ant-design/icons";
 import React, { useEffect } from "react";
 import Router from "next/router";
 import { GetServerSideProps } from "next";
@@ -11,15 +10,11 @@ import { Carousel } from 'antd';
 import get from 'lodash/get';
 const { Header, Content } = Layout;
 
-import styles from "./event.module.scss";
-import { EventInformation } from ".";
+import styles from "../kyt.module.scss";
 import AnswerContainer from "../../../containers/EventContainer/AnswerContainer";
-import LeaderBoard from "../../../containers/EventContainer/ResponsesContainer/LeaderBoard";
-import GoodTeam from '../../../public/good_team.svg';
 
 import moment from 'moment';
 
-const { TabPane } = Tabs;
 export const getServerSideProps: GetServerSideProps = async ({
   req,
   res,
@@ -42,11 +37,6 @@ export const getServerSideProps: GetServerSideProps = async ({
         questions: true,
       }
     }),
-    // prisma.question.findMany({
-    //   where: {
-    //     eventId: Number(params?.id) || -1,
-    //   },
-    // }),
     prisma.userQuestionAnswers.findMany({
       where: {
         user: {
@@ -72,11 +62,9 @@ export const getServerSideProps: GetServerSideProps = async ({
 
 
 
-const Participate = ({ event, userAnswers }) => {
+const KytSubmission = ({ event, userAnswers }) => {
   const questions = get(event, "questions", []);
-  const isVotingWindowOpen = moment().isBetween(moment(event.votingStartsAt), moment(event.votingEndsAt), 'days', '[]');
-  const isExpired = moment().isAfter(moment(event.expiresAt));
-  const showLeaderBoard = isVotingWindowOpen || isExpired;
+
   return (
     <Layout className={styles.participatePage}>
     <PageHeader
@@ -85,41 +73,18 @@ const Participate = ({ event, userAnswers }) => {
           title={event.title}
           subTitle=""
        />
-
       <Content   className={styles.participatePageContent}>
-          <Tabs defaultActiveKey="1">
-        <TabPane tab="Tasks" key="1">
-            <div className={styles.participateCarousel}>  
-                <AnswerContainer questions={questions} userAnswers={userAnswers} />
-              </div>
-        </TabPane>
-        <TabPane tab="All Responses" key="2">
-         {showLeaderBoard ? <LeaderBoard event={event}/> : 
-           <div className={styles.votingWindow}>
-            <GoodTeam/>
-            <h2>
-               {`You can view and appreciate other people responses after ${moment(event.votingStartsAt).format('DD MMM YY')}` }
-             </h2>
-           </div>}
-        </TabPane>
-        <TabPane tab="Details" key="3">
-          <EventInformation event={event} role='member' hideActions={true} handleEdit={null} />
-        </TabPane>
-       
-  </Tabs>
-      <div className={styles.eventInformationHolder}>
-        {/* <Event event={event} handleParticipate={handleParticipate}/> */}
-      </div>
-
-
+        <div className={styles.participateCarousel}>  
+             <AnswerContainer questions={questions} userAnswers={userAnswers} />
+        </div>
       </Content>
   </Layout>
   );
 };
 
-export default Participate;
+export default KytSubmission;
 
-Participate.defaultProps = {
+KytSubmission.defaultProps = {
   auth: {
     isPublic: false,
     redirect: "/",

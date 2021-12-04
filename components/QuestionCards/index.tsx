@@ -41,11 +41,11 @@ export const QuestionCard = ({
       className={styles.questionCards}
       title={
         <div>
-          <h2>🔮 {question.title}</h2>
-          <div style={{ color: "gray" }}>
+          <p>🔮 {question.title}</p>
+          <p style={{ color: "gray" }}>
             {" "}
-            <ClapEmoji count={question.claps} /> On Completing Task{" "}
-          </div>
+            {question.claps} 👏  on completing this task
+          </p>
         </div>
       }
       key={index}

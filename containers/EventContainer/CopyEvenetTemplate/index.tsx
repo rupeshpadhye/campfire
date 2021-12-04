@@ -35,7 +35,7 @@ const CopyEventTemplate = ({ event }) => {
     return (
       id ? <Card
         loading={false}
-        title={`Copy ${event.title}`}
+        title={`Use ${event.title} Template`}
         style={{marginTop: "16px"}}
         extra={
           <Button
