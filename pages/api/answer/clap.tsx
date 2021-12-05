@@ -17,6 +17,7 @@ async function saveClaps({ answerId, email }) {
       },
     }),
   ]);
+  console.log('totalClaps',totalClaps);
   const record = await prisma.answerClaps.findUnique({
     where: {
       userAnswerClap: {

@@ -241,7 +241,7 @@ const AnswerContainer = ({ questions, userAnswers }) => {
             <Claps />
             <h3 style={{ textAlign: "center" }}>
               {" "}
-              Congrats! You earned Participation Claps{" "}
+              Congrats! You earned Participation Claps 🎉
             </h3>
           </>
         ) : null}

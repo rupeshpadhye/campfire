@@ -1,4 +1,4 @@
-import prisma from "../../../lib/prisma";
+import prisma from "../../../../lib/prisma";
 import get from "lodash/get";
 
 export default async function handle(req, res) {
