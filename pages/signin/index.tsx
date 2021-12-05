@@ -50,7 +50,6 @@ function signin({
   error: errorType,
 }) {
 
-console.log('providers',providers);
 const providersToRender =  Object.values(providers).filter((provider: Provider) => {
     if (provider.type === "oauth" || provider.type === "email") {
       return true

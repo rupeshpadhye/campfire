@@ -105,7 +105,7 @@ const Events: React.FC<EventsProps> = (props) => {
   return (
     <AppLayout>
       <CompleteProfileModal visible={visible} setVisible={setVisible}/>
-      {events.length ? (
+      {templateEvents.length ? (
         <CreatorView events={events} templateEvents={templateEvents} />
       ) : <MemberView events={invitedEvents} />
       }

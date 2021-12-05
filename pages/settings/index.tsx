@@ -6,7 +6,9 @@ import { GetServerSideProps } from "next";
 import { getSession } from "next-auth/client";
 import safeJsonStringify from "safe-json-stringify";
 import Plans from "../../components/Plans";
-import styles from './settings.module.scss'
+import styles from './settings.module.scss';
+import get from 'lodash/get';
+
 const { TabPane } = Tabs;
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
@@ -50,8 +52,10 @@ const plans = {
   3: 'pro'
 }
 const OrganizationInfo = ({ organization ={ name: '', website: '', planId: 1} }) => {
-  const { name , website, planId} = organization;
-  const [form] = Form.useForm();
+
+  const name = get(organization, 'name');
+  const website = get(organization, 'website');
+  const planId = get(organization, 'planId');
 
   return (
     <div>

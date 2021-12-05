@@ -35,7 +35,6 @@ const options = {
   secret: process.env.SECRET,
   callbacks: {
     async jwt(token, user, account, profile, isNewUser) {
-      console.log('isNewUser########', isNewUser, user);
       if (account?.accessToken) {
         token.accessToken = account.accessToken
       }
