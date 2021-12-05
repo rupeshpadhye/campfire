@@ -4,7 +4,7 @@ import { oembed } from "@loomhq/loom-embed";
 import { useEffect, useState } from "react";
 import { Button } from "antd";
 
-const API_KEY = "fd569f9e-7930-4f73-9a73-e96457045648";
+const API_KEY = process.env.NEXT_PUBLIC_LOOM_API_KEY; // "fd569f9e-7930-4f73-9a73-e96457045648";
 //const BUTTON_ID = "loom-sdk-button";
 
 export default function LoomRecordButton({ btnLabel, onInsertClicked, type, icon }) {

@@ -4,8 +4,7 @@ import { Button, Image } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 
 
-//const API_KEY = process.env.NEXT_PUBLIC_FILESTACK_API_KEY;
-const API_KEY = "AGjVx6ZZnSZOKdCmH1npDz";
+const API_KEY = process.env.NEXT_PUBLIC_FILESTACK_API_KEY;
 
 const UploadButton = (props) => {
     const [showFileUploadOverlay, setShowFileUploadOverlay] =

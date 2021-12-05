@@ -105,13 +105,14 @@
 
 .videoFeatureSvg {
     max-width: 800px;
+    padding: 24px;
 }
 
 
 .featureCards {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
+    // display: flex;
+    // flex-direction: column;
+    // justify-content: space-evenly;
     text-align: left;
 }
 .featureCard {
@@ -121,14 +122,18 @@
     @media only screen and (max-width: 768px) {
         margin: 16px 0;
     }
-    background: rgba(237,242,247,1);
-    box-shadow: 0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%);
+ //   background: rgba(237,242,247,1);
+ //   box-shadow: 0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%);
 
     h2 {
         font-size: 1.5rem;
         font-weight: 700;
+        text-align: center;
     }
-    p {
+    ul {
+        margin-top: 24px;
+    }
+   li {
         font-size: 1rem;
         margin-bottom: 0.5rem;
         color: rgba(113,128,150,1);
@@ -137,4 +142,8 @@
 
 .footer_holder {
     background: white ;
+}
+
+.features {
+    margin-top: 24px;
 }
