@@ -1,13 +1,11 @@
-import React, { useEffect, useState } from "react";
-import { Card, Modal, Tabs } from "antd";
-import { Form, Button, Input } from "antd";
+import React, {  useState } from "react";
+import { Card } from "antd";
+import {  Button } from "antd";
 import styles from "./QuestionCards.module.scss";
 import {
   DeleteOutlined,
   EditOutlined,
-  VideoCameraFilled,
 } from "@ant-design/icons";
-import ClapEmoji from "../ClapEmoji";
 
 type Props = {
   questions: any;
@@ -41,22 +39,17 @@ export const QuestionCard = ({
       className={styles.questionCards}
       title={
         <div>
-          <p>🔮 {question.title}</p>
-          <p style={{ color: "gray" }}>
-            {" "}
-            {question.claps} 👏  on completing this task
-          </p>
+         <span className={styles.emoji}>🔮</span>  {question.title}
         </div>
       }
       key={index}
-      actions={[
+      actions={question.id ? [
           <div>
             <Button
               danger
               type="dashed"
               style={{ marginRight: "8px" }}
               onClick={() => handleDelete(question)}
-              disabled={!question.id}
               icon={<DeleteOutlined />}
             >
               Delete
@@ -64,40 +57,40 @@ export const QuestionCard = ({
             <Button
               type="dashed"
               onClick={() => handleEdit(question)}
-              disabled={!question.id}
               icon={<EditOutlined />}
             >
               Edit
             </Button>
           </div>
-      ]}
+      ]: null}
       extra={
-        <div>
+        question.id ? <div>
           <Button
             type="text"
             onClick={() =>
               setShowDescQuestionId(showDescQuestionId ? null : question.id)
             }
-            disabled={!question.id}
           >
             {showDescQuestionId === question.id ? "Hide Info" : "View  More"}
           </Button>
-        </div>
+        </div> : null
       }
     >
-      {showDescQuestionId === question.id ? (
+      {showDescQuestionId === question.id || !question.id ? (
         <div>
-          <b>Description</b>
-
           <div>
             {question.desc ? (
               <div dangerouslySetInnerHTML={{ __html: question.desc }}></div>
             ) : (
-              "N/A"
+              ""
             )}
           </div>
         </div>
       ) : null}
+       <div style={{ color: "gray", textAlign: 'right' }}>
+            {" "}
+            {question.claps} <span className={styles.emoji}>👏 </span> on completion
+          </div>
     </Card>
   );
 };

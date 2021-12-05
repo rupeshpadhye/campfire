@@ -1,12 +1,14 @@
 import React, { Suspense, useEffect,useState } from 'react'
 import { oembed } from "@loomhq/loom-embed";
+import { useMediaQuery } from 'react-responsive'
+
 import styles from './Video.module.scss';
 const VideoPreview = ({ videoData }) => { 
     const [videoHTML, setVideoHTML] = useState("");
- 
+    const isMobile = useMediaQuery({ maxWidth: 767 });
     const loadVideo = async() => { 
         if(videoData&& videoData.embedUrl){
-            const { html } = await oembed(videoData.sharedUrl, { width: 600, height: 300 });
+            const { html } = await oembed(videoData.sharedUrl, { width: isMobile ? 400 :  600, height: 300 });
             setVideoHTML(html);
         }
     }

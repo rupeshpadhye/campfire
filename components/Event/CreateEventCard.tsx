@@ -21,12 +21,12 @@ const CreateEventCard: React.FC<CreateEventCardProps> = ({  }) => {
             align="middle"
             className={styles.createEventContent}
           >
-            <Col span={16}>
+            <Col md={16} xs={24} >
               <div className={styles.createEventSvg}>
                 <CreateEvent />
               </div>
             </Col>
-            <Col span={8}>
+            <Col md={8} xs={24}>
               <Typography.Title level={1}>
                 {" "}
                 Hi {session && session.user?.name}!

@@ -186,11 +186,13 @@ const QuestionFormContainer = ({
         bordered={false}
         title={
           <>
-          <div>Add New Task</div>
+          {isPreview ? <> 
+            <div>Template Tasks</div>
+          </> :<div>Add New Task</div>}
           <div style={{
             padding: '16px 0px',
             color: '#808080',
-          }}>Total  {sum(questions.map((q) => q.claps))}👏  Claps </div>
+          }}>Total  {sum(questions.map((q) => q.claps))}<span style={{marginRight: '4px'}}>👏 </span>  Claps </div>
           </>
         }
         extra={

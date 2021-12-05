@@ -92,6 +92,9 @@
 .participatePageContent {
   margin-top: 64px;
   padding: 24px;
+  @media only screen and (max-width: 768px) {
+    padding: 4px;
+  }
 }
 .backButton {
     position:fixed;
@@ -101,6 +104,11 @@
 .participateCarousel {
   width: 800px;
   margin: auto;
+  @media only screen and (max-width: 768px) {
+    width: 100%;
+    padding: 8px;
+  }
+
 
   padding: 24px;
   :global .ant-card {     
@@ -124,5 +132,20 @@
       }
     }
 
+  }
+}  
+
+.emptyState {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 800px;
+  height: 800px;
+  @media only screen and (max-width: 768px) {
+    flex-direction: column;
+    height: 300px;
+    width: 300px;
+    justify-content: center;
+    align-items: center;
   }
 }

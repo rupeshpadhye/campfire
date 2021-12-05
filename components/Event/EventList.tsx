@@ -75,7 +75,7 @@ const EventsList = ({ events, isPreview, title, desc, module = "events" }) => {
         {events.map((event) => {
 
           return (
-            <Col span={4}  key={event.id}>
+            <Col md={4} xs={24}  key={event.id}>
               <Badge.Ribbon {...getRibbonProps(event)}>
                 <Link
                   href={

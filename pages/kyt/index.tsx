@@ -11,9 +11,7 @@ import FullScreenLoading from "../../components/FullScreenLoading";
 import  flatten from 'lodash/flatten';
 import { EventProp } from "./../../types";
 import { has } from 'lodash';
-import EventsList from "../../components/Event/EventList";
 import MeetTheTeam from "./../../public/meet_the_team.svg";
-import CreateEvent from "./../../public/create_event.svg";
 
 import styles from "./kyt.module.scss";
 
@@ -68,13 +66,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
 const EmptyState = () => {
   return (
     <div
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        height: "800px",
-        width: "800px",
-      }}
+      className= {styles.emptyState}
     >
       <MeetTheTeam />
     </div>
@@ -88,10 +80,10 @@ const KytCreatorView = ({  events }) => {
   return (
     <div>
     <Row>
-      <Col md={12} className={styles.kytMemberSvg}>
+      <Col md={12} xs={24} className={styles.kytMemberSvg}>
       <EmptyState />
       </Col>
-      <Col md={12} className={styles.kytMember}>
+      <Col md={12} xs={24}  className={styles.kytMember}>
         <div>
           <div className={styles.kytMemberContent}>
            <h1>{ 'Meet The Team'}</h1>
@@ -132,10 +124,10 @@ const KytMemberView = ({ invitedEvents = [] }) => {
   return (
     <div>
       <Row>
-        <Col md={12} className={styles.kytMemberSvg}>
+        <Col md={12} xs={0} className={styles.kytMemberSvg}>
         <EmptyState />
         </Col>
-        <Col md={12} className={styles.kytMember}>
+        <Col md={12} xs={24} className={styles.kytMember}>
           <div>
             <div className={styles.kytMemberContent}>
              <h1>{title}</h1>

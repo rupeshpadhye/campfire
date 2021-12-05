@@ -8,6 +8,7 @@ import safeJsonStringify from "safe-json-stringify";
 import Plans from "../../components/Plans";
 import styles from './settings.module.scss';
 import get from 'lodash/get';
+import { useMediaQuery } from 'react-responsive'
 
 const { TabPane } = Tabs;
 
@@ -86,9 +87,10 @@ const OrganizationInfo = ({ organization ={ name: '', website: '', planId: 1} })
 };
 
 const Settings = ({ members, organization }) => {
+  const isMobile = useMediaQuery({ maxWidth: 767 });
   return (
     <AppLayout>
-      <Tabs defaultActiveKey="1" size="middle" tabPosition="left">
+      <Tabs defaultActiveKey="1" size="middle" tabPosition={ isMobile ? 'top':'left'}>
         <TabPane tab="Organization" key="1">
           <OrganizationInfo  organization={organization}/>
         </TabPane>

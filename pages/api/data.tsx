@@ -14,15 +14,15 @@ export const templates = [
         "questions": [
           {
             "title": "Are you dog or cat lover? Show us your pet.",
-            "desc": "Would love to hear why you are dog/cat lover.Whats your pet name, share memorable moments happened this year",
+            "desc": "Would love to hear why you are dog/cat lover.Whats your pet name, share memorable moments with pet",
             "videoData": {
               
             },
             "claps": 5
           },
           {
-            "title": "You’re walking down the street, feeling great — what holiday song would be playing in the background?",
-            "desc": "",
+            "title": "You’re walking down the street, feeling great — what holiday song would be playing in the background? Sing it for us",
+            "desc": "Sing your heart out!",
             "videoData": {
               
             },
@@ -37,8 +37,8 @@ export const templates = [
             "claps": 5
           }, 
           {
-            "title": "What holiday movie or special do you watch over and over again?",
-            "desc": "your recent bing watch and was it good",
+            "title": "What holiday movie or special do you watch over and over again? what keeps you hooked ",
+            "desc": "Your recent bing watch and was it good",
             "videoData": {
               
             },
@@ -50,11 +50,11 @@ export const templates = [
             "videoData": {
               
             },
-            "claps": 7
+            "claps": 8
           },
 
           {
-            "title": "Showoff Christmas Trees",
+            "title": "Showoff your Christmas Trees",
             "desc": "",
             "videoData": {
               
@@ -77,10 +77,10 @@ export const templates = [
 export const kycTemplates = [    {
   "id": "know-the-team",
   "type": "template",
-  "title": "Ice Breaker",
-  "content": "Hello, Help team member to know about you apart from work. You can easily discover and learn about coworkers on other teams. ",
+  "title": "Know Your Team",
+  "content": "Help team member to know more about you apart from work. build long lasting Bonds! ",
   "published": false,
-  "headerImage": "https://lindseyelmore.com/wp-content/uploads/2020/04/video-call.jpg",
+  "headerImage": "",
   "backgroundImage": null,
   "uniqueLink": null,
   "expiresAt": null,
@@ -88,22 +88,43 @@ export const kycTemplates = [    {
   "isForeverActive": true,
   "questions": [
     {
-      "title": "Tell us about your career journey",
-      "desc": "",
+      "title": "Tell us how you got here",
+      "desc": "How was your career/life journey and how you joined the company",
+      "videoData": {
+      },
+      "claps": 5
+    },
+    {
+      "title": "What is your favourite past time/talent/hobby",
+      "desc": "Would love to hear how you spend your time ",
       "videoData": {
       },
       "claps": 5
     },
     {
       "title": "What would you like to learn if you had more time?",
-      "desc": "Would love to hear how you spend your time , your ho",
+      "desc": "you wish, you could do this ",
       "videoData": {
       },
       "claps": 5
     },
     {
-      "title": "What was your last bing watch or favourite movie",
-      "desc": "Would love to hear how you spend your time , your ho",
+      "title": "New year's resolution you actually kept",
+      "desc": "",
+      "videoData": {
+      },
+      "claps": 5
+    },
+    {
+      "title": "What was your last bing watch",
+      "desc": "",
+      "videoData": {
+      },
+      "claps": 5
+    },
+    {
+      "title": "How do you prefer to communicate with peers",
+      "desc": "Tell us do you like video calls, chats or something else..",
       "videoData": {
       },
       "claps": 5

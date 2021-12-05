@@ -1,11 +1,18 @@
 .layoutContainer {
     min-height: 100vh;
+    @media only screen and (max-width: 768px) {
+        flex-direction: unset;
+      }
 }
 .layoutContent {
     display: flex;
     flex-direction: column;
     margin-left: 200px;
     padding: 24px;
+    @media only screen and (max-width: 768px) {
+        margin-left: 0px;
+        width: 100% !important;
+    }
 }
 .layoutContentWithoutSider {
     display: flex;
@@ -53,6 +60,9 @@
     left: 0;
     height: 100vh;
     z-index: 10;
+    @media only screen and (max-width: 768px) {
+        display: none;
+      }
 }
 
 .backButton {

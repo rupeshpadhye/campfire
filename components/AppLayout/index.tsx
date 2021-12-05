@@ -94,7 +94,7 @@ const AppLayout: React.FC<Props> = (props) => {
     const role = get(session, "user.role");
     const menu = menuItems.filter((item) => item.role.includes(role));
     return (
-      <Sider className={styles.layoutSider}>
+      <Sider className={styles.layoutSider}  collapsed={true}>
         <Menu mode="inline" selectedKeys={[key]} onClick={handleMenuClick}>
           {menu.map((item) => (
             <Menu.Item key={item.id} icon={item.icon}>
