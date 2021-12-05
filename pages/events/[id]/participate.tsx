@@ -96,10 +96,10 @@ const Participate = ({ event, userAnswers }) => {
         <TabPane tab="All Responses" key="2">
          {showLeaderBoard ? <LeaderBoard event={event}/> : 
            <div className={styles.votingWindow}>
-            <GoodTeam/>
             <h2>
-               {`You can view and appreciate other people responses after ${moment(event.votingStartsAt).format('DD MMM YY')}` }
+               {`Hold on your excitement till ${moment(event.votingStartsAt).format('DD MMM YY')}` }
              </h2>
+            <GoodTeam/>
            </div>}
         </TabPane>
         <TabPane tab="Details" key="3">

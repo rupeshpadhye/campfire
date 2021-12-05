@@ -1,3 +1,5 @@
+@import './../../css/mixins.scss';
+
 .emptyState {
     margin: auto;
 }
@@ -7,4 +9,36 @@
     text-align: center;
     font-weight: 600;
     font-size: 1.5rem;
+}
+
+.memberViewSvg {
+    background: #D4D1EC;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.eventsView {
+    background: white;
+    margin: 64px 0;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.memberEventsView {
+    flex-grow: 1;
+ 
+}
+
+.snow {
+    position: absolute;
+}
+
+.eventBtn {
+    @include primaryButton;
 }

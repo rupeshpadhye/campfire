@@ -31,6 +31,9 @@
     margin: 0px;
     visibility: visible;
     height: 100%;
+    :global .ant-card-cover {
+        padding: 8px;
+    }
 }
 .antImage  {
         width: 100%;

@@ -7,6 +7,8 @@ import { Avatar, Button, Card, Input, notification } from "antd";
 import UploadButton from "../../components/UploadButton";
 import { EditOutlined } from "@ant-design/icons";
 import CompleteProfileModal from "../../containers/ProfileContainer/CompleteProfileModal";
+import { Row, Col } from 'antd';
+import JoyRide from './../../public/joyride.svg';
 
 const Profile = () => {
   const [ session, loading ] = useSession();
@@ -28,7 +30,12 @@ const Profile = () => {
   return (
     <AppLayout>
       <CompleteProfileModal visible={visible} setVisible={setVisible} isDefaultModal={true}/>
-       <div>
+       <Row>
+         <Col md={12}>
+          <JoyRide />
+         </Col>
+         <Col  md={12}>
+         <div>
           <div className={styles.line}>
             <div className={styles.avatarImg}>
                 <Avatar size={128} src={avatar} />
@@ -39,6 +46,9 @@ const Profile = () => {
             className={styles.editButton} size='large' type='text' icon={<EditOutlined/>}/>
           </div>
         </div>
+         </Col>
+       </Row>
+    
 
     </AppLayout>
   );

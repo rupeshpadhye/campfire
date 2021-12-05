@@ -17,10 +17,18 @@
 }
 
 .line {
-  background: linear-gradient(135deg, #e9eff9 0%, #fde4be 100%);
+  background-image: linear-gradient( 
+    300deg,rgb(108, 99, 255),#a951ed);
   display: flex;
   align-items: center;
   position: relative;
+
+  h1 {
+    color: white;
+  }
+  button {
+    color: white;
+  }
 }
 
 .editButton {

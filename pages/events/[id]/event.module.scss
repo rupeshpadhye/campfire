@@ -1,3 +1,5 @@
+@import './../../../css/mixins.scss';
+
 .participatePage {
     margin: 0;
     width: 100vw;
@@ -92,12 +94,19 @@
 .eventInfo {
   width: 600px;
   margin: auto;
+
+  button {
+    @include primaryButtonSmall;
+    float: right;
+    margin: 0 16px;
+  }
 }
 
 .votingWindow {
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
   svg {
     width: 800px;
     height: 600px;

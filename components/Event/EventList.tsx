@@ -73,10 +73,9 @@ const EventsList = ({ events, isPreview, title, desc, module = "events" }) => {
       <p>{desc}</p>
       <Row gutter={[16, 16]}>
         {events.map((event) => {
-          console.log(event.expiresAt);
 
           return (
-            <Col span={4} key={event.id}>
+            <Col span={4}  key={event.id}>
               <Badge.Ribbon {...getRibbonProps(event)}>
                 <Link
                   href={
