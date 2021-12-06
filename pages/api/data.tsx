@@ -80,7 +80,7 @@ export const kycTemplates = [    {
   "title": "Know Your Team",
   "content": "Help team member to know more about you apart from work. build long lasting Bonds! ",
   "published": false,
-  "headerImage": "",
+  "headerImage": "https://lindseyelmore.com/wp-content/uploads/2020/04/video-call.jpg",
   "backgroundImage": null,
   "uniqueLink": null,
   "expiresAt": null,

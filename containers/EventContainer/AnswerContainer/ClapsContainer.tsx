@@ -5,10 +5,13 @@ import get from "lodash/get";
 import { Avatar, Divider, Tooltip } from "antd";
 import { UserOutlined, AntDesignOutlined } from "@ant-design/icons";
 import styles from "./ClapsContainer.module.scss";
+import uniq from 'lodash/uniq';
+import { useSession } from "next-auth/client";
 
 const ClapsContainer = ({ question, canClap }) => {
   const [claps, setClaps] = useState(0);
   const [clappedBy, setClappedBy] = useState([]);
+  const [ session, loading ] = useSession();
 
   useEffect(() => {
     setClaps(get(question, "answer.totalClaps", 0));
@@ -40,7 +43,10 @@ const ClapsContainer = ({ question, canClap }) => {
       const data = await response.json();
       if (!response.ok) {
         const message = get(data, "message");
-        console.log(message);
+        const image = session?.user?.image;
+        if(image) {
+          setClappedBy(uniq([...clappedBy,image ]));
+        }
         notification.error({
           message: message,
         });
