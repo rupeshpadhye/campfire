@@ -88,8 +88,15 @@ export const kycTemplates = [    {
   "isForeverActive": true,
   "questions": [
     {
-      "title": "Tell us how you got here",
+      "title": "Tell us about your career journey",
       "desc": "How was your career/life journey and how you joined the company",
+      "videoData": {
+      },
+      "claps": 5
+    },
+    {
+      "title": "Who is your role model and why?",
+      "desc": "Tell us about your mentor or you are most fond of",
       "videoData": {
       },
       "claps": 5

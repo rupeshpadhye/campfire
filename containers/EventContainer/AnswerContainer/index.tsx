@@ -7,7 +7,7 @@ import { DeleteOutlined, VideoCameraFilled } from "@ant-design/icons";
 import get from "lodash/get";
 import isEmpty from 'lodash/isEmpty';
 import LoomRecordButton from "../../../components/Video/RecordButton";
-import ClapEmoji from "../../../components/ClapEmoji";
+import Prizes from "../../../components/Prizes";
 import VideoPreview from "../../../components/Video/VideoPreview";
 import Plane from "../../../components/Loading/Plane";
 import Claps from "../../../components/Loading/Claps";
@@ -98,10 +98,12 @@ export const QuestionAnswerCard = ({
         )
       }
     >
+     <p className={styles.clapMsg}>
+        Complete This Task And Earn {question.claps} 👏{" "}
+     </p>
       {showDescQuestionId === question.id ? (
-        <div>
-          <b>Description</b>
-
+        <div className={styles.desc}>
+          Description
           <div>
             {question.desc ? (
               <div dangerouslySetInnerHTML={{ __html: question.desc }}></div>
@@ -121,16 +123,13 @@ export const QuestionAnswerCard = ({
           <div className={styles.uploadVideo}>
             <UploadVideo />
           </div>
-          <h2 style={{ textAlign: "center", margin: "8px" }}>
-            Complete This Task And Earn {question.claps} 👏{" "}
-          </h2>
         </div>
       )}
     </Card>
   );
 };
 
-const AnswerContainer = ({ questions, userAnswers }) => {
+const AnswerContainer = ({ questions, userAnswers, banner }) => {
   const [userQuestionsAnswers, setUserQuestionsAnswers] = React.useState([]);
   const [saving, setSaving] = useState(null);
   useEffect(() => {
@@ -246,6 +245,7 @@ const AnswerContainer = ({ questions, userAnswers }) => {
           </>
         ) : null}
       </Modal>
+      {banner ? banner : null}
       <Carousel>
         {userQuestionsAnswers.map((question, index) => {
           return (

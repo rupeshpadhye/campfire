@@ -1,0 +1,22 @@
+.giftSvg {
+    width: 300px;
+}
+
+.prizeCard {
+    position: absolute;
+    right: 16px;
+    border-radius: 0px !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.giftText {
+    text-align: center;
+    width: 300px;
+    padding: 4px;
+    span {
+        margin-right: 4px;
+    }
+}

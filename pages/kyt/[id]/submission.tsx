@@ -14,6 +14,7 @@ import styles from "../kyt.module.scss";
 import AnswerContainer from "../../../containers/EventContainer/AnswerContainer";
 
 import moment from 'moment';
+import TeamGift from "../../../components/Prizes/TeamGIft";
 
 export const getServerSideProps: GetServerSideProps = async ({
   req,
@@ -74,8 +75,12 @@ const KytSubmission = ({ event, userAnswers }) => {
           subTitle=""
        />
       <Content   className={styles.participatePageContent}>
-        <div className={styles.participateCarousel}>  
-             <AnswerContainer questions={questions} userAnswers={userAnswers} />
+        <div className={styles.participateCarousel}> 
+             <AnswerContainer 
+             questions={questions} 
+             userAnswers={userAnswers} 
+             banner ={<TeamGift/>}
+             />
         </div>
       </Content>
   </Layout>
