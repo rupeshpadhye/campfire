@@ -2,7 +2,6 @@ import prisma from "../../../../lib/prisma";
 
 export default async function handle(req, res) {
   const eventId = parseInt(req.query.eventId);
-  console.log('eventId', eventId);
   try {
     switch (req.method) {
       case "PUT":
@@ -17,7 +16,6 @@ export default async function handle(req, res) {
   }
 
   async function updateEvent() {
-    try {
       const { published } = await prisma.event.findUnique({
         select: {
           published: true,
@@ -33,8 +31,5 @@ export default async function handle(req, res) {
         },
       });
       return result;
-    } catch (error) {
-      console.log(error);
-    }
-  }
+    } 
 }

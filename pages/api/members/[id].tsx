@@ -7,12 +7,16 @@ export default async function handle(req, res) {
   const user = await prisma.user.findUnique({
     where: { email: session.user.email },
   });
+  try {
   switch (req.method) {
     case 'DELETE':
         return removeMember();
     default:
         return res.status(405).end(`Method ${req.method} Not Allowed`)
     }
+  } catch(e) {
+      return res.status(400).send({message: e.message});
+  } 
 
     async function removeMember() { 
 

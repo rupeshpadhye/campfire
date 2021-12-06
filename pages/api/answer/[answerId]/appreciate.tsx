@@ -24,7 +24,7 @@ export default async function handle(req, res) {
     case 'GET':
        const result =  await getClappedUsers(answerId);
        const appreciatedBy = result.map(r => get(r,'user.image'))
-       res.json({ appreciatedBy });
+       return res.json({ appreciatedBy });
      default:
         return res.status(405).end(`Method ${req.method} Not Allowed`)
     } 

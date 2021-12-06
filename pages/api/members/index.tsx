@@ -44,6 +44,7 @@ const findMembers = async (user) => {
       user: true,
     },
   });
+  console.log('memberCreatedByUser',memberCreatedByUser);
   const members = memberCreatedByUser.map(m => m.user);
   return members;
 }
@@ -57,17 +58,17 @@ export default async function handle(req, res) {
   switch (req.method) {
     case 'POST':
        const createdUsers =  await createMember({ members, user});
-         res.json({ members: createdUsers });
-      break;
+       return res.json({ members: createdUsers });
     case 'GET':
        const eventUses = await findMembers(user);
-       res.json(eventUses);
-
+       return res.json(eventUses);
     default:
         return res.status(405).end(`Method ${req.method} Not Allowed`)
     }
   } catch(e) {
+    console.log('memebers api here');
     console.error(e);
+    return res.status(400).send({ message: e.message});
   } 
 
 }
