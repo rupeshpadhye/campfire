@@ -39,7 +39,7 @@ export const QuestionAnswerCard = ({
       className={styles.questionCards}
       title={
         <div>
-          <p>🔮 {question.title}</p>
+          <p style={{ whiteSpace: 'break-spaces'}}>🔮 {question.title}</p>
         </div>
       }
       key={index}
