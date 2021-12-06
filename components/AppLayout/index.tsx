@@ -21,6 +21,7 @@ import {
   BackwardOutlined,
   ArrowLeftOutlined,
 } from "@ant-design/icons";
+import { useMediaQuery } from "react-responsive";
 type Props = {
   children: ReactNode;
   hideSider?: boolean;
@@ -81,6 +82,7 @@ const AppLayout: React.FC<Props> = (props) => {
     const menu = menuItems.find((item) => item.id === key);
     router.push(menu.link);
   };
+  const isMobile = useMediaQuery({ maxWidth: 767 });
 
   useEffect(() => {
     const items = flatten(menuItems);
@@ -94,7 +96,7 @@ const AppLayout: React.FC<Props> = (props) => {
     const role = get(session, "user.role");
     const menu = menuItems.filter((item) => item.role.includes(role));
     return (
-      <Sider className={styles.layoutSider}  collapsed={true}>
+      <Sider className={styles.layoutSider}  collapsed={isMobile}>
         <Menu mode="inline" selectedKeys={[key]} onClick={handleMenuClick}>
           {menu.map((item) => (
             <Menu.Item key={item.id} icon={item.icon}>

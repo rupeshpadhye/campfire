@@ -31,12 +31,14 @@ const createMember = async ({members, user}) => {
 }
 
 const findMembers = async (user) => {
-  const usrInfo = await prisma.user.findUnique({ where: { email: user.email } });
+  // const usrInfo = await prisma.user.findUnique({ where: { email: user.email } });
   
-  const { id } = usrInfo;
+  // const { id } = usrInfo;
   let memberCreatedByUser = await prisma.members.findMany({
     where: {
-      createdBy: { id },
+      createdBy: { is: {
+        email: user.email
+      }}
     },
     include: {
       user: true,
@@ -51,7 +53,7 @@ export default async function handle(req, res) {
 
   const session = await getSession({ req });
   const { user } = session;
-
+  try {
   switch (req.method) {
     case 'POST':
        const createdUsers =  await createMember({ members, user});
@@ -64,6 +66,9 @@ export default async function handle(req, res) {
     default:
         return res.status(405).end(`Method ${req.method} Not Allowed`)
     }
+  } catch(e) {
+    console.error(e);
+  } 
 
 }
 
