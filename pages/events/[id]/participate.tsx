@@ -18,6 +18,7 @@ import LeaderBoard from "../../../containers/EventContainer/ResponsesContainer/L
 import GoodTeam from '../../../public/good_team.svg';
 
 import moment from 'moment';
+import Prizes from "../../../components/Prizes";
 
 const { TabPane } = Tabs;
 export const getServerSideProps: GetServerSideProps = async ({
@@ -90,7 +91,11 @@ const Participate = ({ event, userAnswers }) => {
           <Tabs defaultActiveKey="1">
         <TabPane tab="Tasks" key="1">
             <div className={styles.participateCarousel}>  
-                <AnswerContainer questions={questions} userAnswers={userAnswers} />
+                <AnswerContainer 
+                  questions={questions} 
+                  userAnswers={userAnswers}
+                  banner={<Prizes/>}
+                  />
               </div>
         </TabPane>
         <TabPane tab="All Responses" key="2">
