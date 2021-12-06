@@ -39,7 +39,7 @@ export const QuestionAnswerCard = ({
       className={styles.questionCards}
       title={
         <div>
-          <h2>🔮 {question.title}</h2>
+          <p>🔮 {question.title}</p>
         </div>
       }
       key={index}
